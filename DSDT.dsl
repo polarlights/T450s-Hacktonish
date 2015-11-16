@@ -4812,10 +4812,10 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
                     Method (_Q64, 0, NotSerialized)  // _Qxx: EC Query
                     {
-                        If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x10))
-                        {
-                            \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x1005)
-                        }
+                        
+                        Notify(\_SB.PCI0.LPC.KBD, 0x0169)
+                        Notify(\_SB.PCI0.LPC.KBD, 0x01e9)
+
                     }
 
                     Method (_Q65, 0, NotSerialized)  // _Qxx: EC Query
@@ -4828,27 +4828,10 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
                     Method (_Q16, 0, NotSerialized)  // _Qxx: EC Query
                     {
-                        If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x40))
-                        {
-                            \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x1007)
-                        }
-                        Else
-                        {
-                            If (LEqual (\VHYB (0x03, 0x00), 0x03))
-                            {
-                                Notify (\_SB.PCI0.VID, 0x80) // Status Change
-                                Return (Zero)
-                            }
+                        
+                        Notify(\_SB.PCI0.LPC.KBD, 0x026e)
+                        Notify(\_SB.PCI0.LPC.KBD, 0x02ee)
 
-                            If (VIGD)
-                            {
-                                \_SB.PCI0.VID.VSWT ()
-                            }
-                            Else
-                            {
-                                \_SB.PCI0.PEG.VID.VSWT ()
-                            }
-                        }
                     }
 
                     Method (_Q17, 0, NotSerialized)  // _Qxx: EC Query
@@ -4944,34 +4927,34 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
                     Method (_Q66, 0, NotSerialized)  // _Qxx: EC Query
                     {
-                        If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x10000000))
-                        {
-                            \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x101D)
-                        }
+                        
+                        Notify(\_SB.PCI0.LPC.KBD, 0x0164)
+                        Notify(\_SB.PCI0.LPC.KBD, 0x01e4)
+
                     }
 
                     Method (_Q67, 0, NotSerialized)  // _Qxx: EC Query
                     {
-                        If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x20000000))
-                        {
-                            \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x101E)
-                        }
+                        
+                        Notify(\_SB.PCI0.LPC.KBD, 0x0165)
+                        Notify(\_SB.PCI0.LPC.KBD, 0x01e5)
+
                     }
 
                     Method (_Q68, 0, NotSerialized)  // _Qxx: EC Query
                     {
-                        If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x40000000))
-                        {
-                            \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x101F)
-                        }
+                        
+                        Notify(\_SB.PCI0.LPC.KBD, 0x0166)
+                        Notify(\_SB.PCI0.LPC.KBD, 0x01e6)
+
                     }
 
                     Method (_Q69, 0, NotSerialized)  // _Qxx: EC Query
                     {
-                        If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x80000000))
-                        {
-                            \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x1020)
-                        }
+                        
+                        Notify(\_SB.PCI0.LPC.KBD, 0x0167)
+                        Notify(\_SB.PCI0.LPC.KBD, 0x01e7)
+
                     }
 
                     Method (_Q26, 0, NotSerialized)  // _Qxx: EC Query
@@ -6644,17 +6627,10 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                     {
                         Method (_Q6A, 0, NotSerialized)  // _Qxx: EC Query
                         {
-                            If (HDMC)
-                            {
-                                Noop
-                            }
-                            Else
-                            {
-                                If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x04000000))
-                                {
-                                    \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x101B)
-                                }
-                            }
+                            
+                            Notify(\_SB.PCI0.LPC.KBD, 0x0168)
+                            Notify(\_SB.PCI0.LPC.KBD, 0x01e8)
+
                         }
                     }
 
@@ -11382,86 +11358,18 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
             })
             Method (_Q14, 0, NotSerialized)  // _Qxx: EC Query
             {
-                If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x8000))
-                {
-                    \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x1010)
-                }
+                
+                Notify(\_SB.PCI0.LPC.KBD, 0x0206)
+                Notify(\_SB.PCI0.LPC.KBD, 0x0286)
 
-                If (\NBCF)
-                {
-                    If (\VIGD)
-                    {
-                        Notify (\_SB.PCI0.VID.LCD0, 0x86) // Device-Specific
-                    }
-                    Else
-                    {
-                        Notify (\_SB.PCI0.PEG.VID.LCD0, 0x86) // Device-Specific
-                    }
-                }
-                Else
-                {
-                    Store (\BRLV, Local0)
-                    If (LNotEqual (Local0, 0x0F))
-                    {
-                        Increment (Local0)
-                        Store (Local0, \BRLV)
-                    }
-
-                    If (\VIGD)
-                    {
-                        \UCMS (0x16)
-                        \_SB.PCI0.LPC.EC.BRNS ()
-                    }
-                    Else
-                    {
-                        \VBRC (Local0)
-                    }
-
-                    \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x6050)
-                }
             }
 
             Method (_Q15, 0, NotSerialized)  // _Qxx: EC Query
             {
-                If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x00010000))
-                {
-                    \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x1011)
-                }
+                
+                Notify(\_SB.PCI0.LPC.KBD, 0x0205)
+                Notify(\_SB.PCI0.LPC.KBD, 0x0285)
 
-                If (\NBCF)
-                {
-                    If (\VIGD)
-                    {
-                        Notify (\_SB.PCI0.VID.LCD0, 0x87) // Device-Specific
-                    }
-                    Else
-                    {
-                        Notify (\_SB.PCI0.PEG.VID.LCD0, 0x87) // Device-Specific
-                    }
-                }
-                Else
-                {
-                    Store (\BRLV, Local0)
-                    If (Local0)
-                    {
-                        Decrement (Local0)
-                        Store (Local0, \BRLV)
-                    }
-
-                    If (\VIGD)
-                    {
-                        \UCMS (0x16)
-                        \_SB.PCI0.LPC.EC.BRNS ()
-                    }
-                    Else
-                    {
-                        \VBRC (Local0)
-                    }
-
-                    \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x6050)
-                }
-
-                Return (Zero)
             }
 
             Method (BRNS, 0, NotSerialized)
@@ -14942,6 +14850,8 @@ If (LOr (LEqual (Arg0, 0x00), LGreaterEqual (Arg0, 0x05)))
         If (LEqual (Arg0, 0x03))
         {
             \NVSS (0x00)
+            \_SB.PCI0.LPC.EC.LED (0x00, 0x80)
+            \_SB.PCI0.LPC.EC.LED (0x0A, 0x80)
             Store (\_SB.PCI0.LPC.EC.AC._PSR (), \PWRS)
             If (\OSC4)
             {
