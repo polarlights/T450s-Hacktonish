@@ -99,85 +99,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
     {
         Method (PNTF, 1, NotSerialized)
         {
-            If (LAnd (LEqual (Arg0, 0x80), LNot (\OSPX)))
-            {
-                If (And (\_PR.CFGD, 0x01))
-                {
-                    If (\CPPX)
-                    {
-                        Notify (\_SB.PCCD, 0x82) // Device-Specific Change
-                    }
-                }
-            }
-            Else
-            {
-                If (And (\_PR.CFGD, 0x0200))
-                {
-                    If (LOr (LAnd (And (PDC0, 0x08), LOr (LEqual (Arg0, 
-                        0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC0, 0x10), LEqual (Arg0, 
-                        0x81))))
-                    {
-                        Notify (\_PR.CPU0, Arg0)
-                    }
+            
+            // nothing
 
-                    If (LOr (LAnd (And (PDC1, 0x08), LOr (LEqual (Arg0, 
-                        0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC1, 0x10), LEqual (Arg0, 
-                        0x81))))
-                    {
-                        Notify (\_PR.CPU1, Arg0)
-                    }
-
-                    If (LOr (LAnd (And (PDC2, 0x08), LOr (LEqual (Arg0, 
-                        0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC2, 0x10), LEqual (Arg0, 
-                        0x81))))
-                    {
-                        Notify (\_PR.CPU2, Arg0)
-                    }
-
-                    If (LOr (LAnd (And (PDC3, 0x08), LOr (LEqual (Arg0, 
-                        0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC3, 0x10), LEqual (Arg0, 
-                        0x81))))
-                    {
-                        Notify (\_PR.CPU3, Arg0)
-                    }
-
-                    If (LOr (LAnd (And (PDC4, 0x08), LOr (LEqual (Arg0, 
-                        0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC4, 0x10), LEqual (Arg0, 
-                        0x81))))
-                    {
-                        Notify (\_PR.CPU4, Arg0)
-                    }
-
-                    If (LOr (LAnd (And (PDC5, 0x08), LOr (LEqual (Arg0, 
-                        0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC5, 0x10), LEqual (Arg0, 
-                        0x81))))
-                    {
-                        Notify (\_PR.CPU5, Arg0)
-                    }
-
-                    If (LOr (LAnd (And (PDC6, 0x08), LOr (LEqual (Arg0, 
-                        0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC6, 0x10), LEqual (Arg0, 
-                        0x81))))
-                    {
-                        Notify (\_PR.CPU6, Arg0)
-                    }
-
-                    If (LOr (LAnd (And (PDC7, 0x08), LOr (LEqual (Arg0, 
-                        0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC7, 0x10), LEqual (Arg0, 
-                        0x81))))
-                    {
-                        Notify (\_PR.CPU7, Arg0)
-                    }
-                }
-                Else
-                {
-                    If (LOr (LEqual (Arg0, 0x80), LOr (LEqual (Arg0, 0x81), LEqual (
-                        Arg0, 0x82))))
-                    {
-                        Notify (\_PR.CPU0, Arg0)
-                    }
-                }
-            }
         }
     }
 
@@ -2832,7 +2756,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 Return (Arg3)
             }
 
-            Mutex (MDGS, 0x07)
+            Mutex(MDGS, 0)
             Name (VDEE, 0x01)
             Name (VDDA, Buffer (0x02) {})
             CreateBitField (VDDA, 0x00, VUPC)
@@ -4022,8 +3946,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                             0x01,               // Alignment
                             0x02,               // Length
                             )
-                        IRQNoFlags ()
-                            {2}
+                        
                     })
                 }
 
@@ -4038,40 +3961,30 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                             0x01,               // Alignment
                             0x04,               // Length
                             )
-                        IRQNoFlags ()
-                            {0}
+                        
                     })
                 }
 
                 Device (HPET)
                 {
                     Name (_HID, EisaId ("PNP0103") /* HPET System Timer */)  // _HID: Hardware ID
-                    Method (_STA, 0, NotSerialized)  // _STA: Status
-                    {
-                        If (LAnd (\WNTF, LNot (\WXPF)))
-                        {
-                            Return (0x00)
-                        }
-                        Else
-                        {
-                            Return (0x0F)
-                        }
+                    
 
-                        Return (0x00)
-                    }
+                    Name (BUF0, ResourceTemplate()
+{
+    IRQNoFlags() { 0, 8, 11, 15 }
 
-                    Name (BUF0, ResourceTemplate ()
-                    {
                         Memory32Fixed (ReadOnly,
                             0xFED00000,         // Address Base
                             0x00000400,         // Address Length
                             _Y26)
                     })
-                    Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
+
+                    
+                    Name (_STA, 0x0F)
+                    Method (_CRS, 0, NotSerialized)
                     {
-                        CreateDWordField (BUF0, \_SB.PCI0.LPC.HPET._Y26._BAS, HPT0)  // _BAS: Base Address
-                        Store (\HPET, HPT0) /* \_SB_.PCI0.LPC_.HPET._CRS.HPT0 */
-                        Return (BUF0) /* \_SB_.PCI0.LPC_.HPET.BUF0 */
+                        Return (BUF0)
                     }
                 }
 
@@ -4144,8 +4057,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                             0x01,               // Alignment
                             0x02,               // Length
                             )
-                        IRQNoFlags ()
-                            {8}
+                        
                     })
                 }
 
@@ -4864,7 +4776,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                         }
                     }
 
-                    Mutex (MCPU, 0x07)
+                    Mutex(MCPU, 0)
                     Method (_Q10, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (\_SB.PCI0.LPC.EC.HKEY.MHKK (0x01))
@@ -5494,7 +5406,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                         SBDN,   128
                     }
 
-                    Mutex (BATM, 0x07)
+                    Mutex(BATM, 0)
                     Method (GBIF, 3, NotSerialized)
                     {
                         Acquire (BATM, 0xFFFF)
@@ -6002,7 +5914,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
                         Name (DHKC, 0x00)
                         Name (DHKB, 0x01)
-                        Mutex (XDHK, 0x07)
+                        Mutex(XDHK, 0)
                         Name (DHKH, 0x00)
                         Name (DHKW, 0x00)
                         Name (DHKS, 0x00)
@@ -6926,7 +6838,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                     }
                 }
 
-                Mutex (MDGS, 0x07)
+                Mutex(MDGS, 0)
                 Name (VDEE, 0x01)
                 Name (VDDA, Buffer (0x04) {})
                 CreateBitField (VDDA, 0x00, VUPC)
@@ -9119,6 +9031,21 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                         }
                     }
                 }
+                Device (BUS0)
+                {
+                    Name (_CID, "smbus")
+                    Name (_ADR, Zero)
+                    Device (DVL0)
+                    {
+                        Name (_ADR, 0x57)
+                        Name (_CID, "diagsvault")
+                        Method (_DSM, 4, NotSerialized)
+                        {
+                            If (LEqual (Arg2, Zero)) { Return (Buffer() { 0x03 } ) }
+                            Return (Package() { "address", 0x57 })
+                        }
+                    }
+                }
             }
 
             Device (XHCI)
@@ -10493,6 +10420,10 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 Name (_ADR, 0x001B0000)  // _ADR: Address
                 Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, 0x00)
+            }
+            Device (IMEI)
+            {
+                Name (_ADR, 0x00160000)
             }
         }
 
@@ -12682,7 +12613,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 "uhdp3", 
                 "mhdp3"
             })
-            Mutex (MWMI, 0x07)
+            Mutex(MWMI, 0)
             Name (PCFG, Buffer (0x18) {})
             Name (IBUF, Buffer (0x0100) {})
             Name (ILEN, 0x00)
@@ -14296,7 +14227,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
         Scope (\_SB.PCI0.LPC.EC.HKEY)
         {
-            Mutex (BFWM, 0x07)
+            Mutex(BFWM, 0)
             Method (MHCF, 1, NotSerialized)
             {
                 Store (\BFWC (Arg0), Local0)
@@ -14990,7 +14921,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
     })
     Method (\_WAK, 1, NotSerialized)  // _WAK: Wake
     {
-        If (LOr (LEqual (Arg0, 0x00), LGreaterEqual (Arg0, 0x05)))
+        If (LOr(LLess(Arg0,1),LGreater(Arg0,5))) { Store(3,Arg0) }
+If (LOr (LEqual (Arg0, 0x00), LGreaterEqual (Arg0, 0x05)))
         {
             Return (WAKI) /* \WAKI */
         }
@@ -15882,7 +15814,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
         PAR3,   32
     }
 
-    Mutex (MSMI, 0x07)
+    Mutex(MSMI, 0)
     Method (SMI, 5, NotSerialized)
     {
         Acquire (MSMI, 0xFFFF)
