@@ -8144,7 +8144,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x6D, 
-                    0x04
+                    0x00
                 })
             }
 
@@ -9135,7 +9135,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 Name (_PRW, Package (0x03)  // _PRW: Power Resources for Wake
                 {
                     0x6D, 
-                    0x03, 
+                    0x00, 
                     \_SB.PCI0.LPC.EC.PUBS
                 })
                 Method (CUID, 1, Serialized)
@@ -10006,7 +10006,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 Name (_PRW, Package (0x03)  // _PRW: Power Resources for Wake
                 {
                     0x6D, 
-                    0x03, 
+                    0x00, 
                     \_SB.PCI0.LPC.EC.PUBS
                 })
                 Device (URTH)
