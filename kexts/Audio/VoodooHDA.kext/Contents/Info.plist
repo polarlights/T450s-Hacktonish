@@ -65,12 +65,21 @@
 				<key>Rec</key>
 				<integer>70</integer>
 				<key>iGain</key>
-				<integer>80</integer>
+				<integer>0</integer>
 				<key>iMix</key>
 				<integer>0</integer>
 			</dict>
 			<key>NodesToPatch</key>
-			<array/>
+			<array>
+				<dict>
+					<key>Codec</key>
+					<integer>0</integer>
+					<key>Config</key>
+ 					<string>0x0321101f</string>
+					<key>Node</key>
+					<integer>21</integer>
+				</dict>
+            </array>
 			<key>Noise</key>
 			<integer>0</integer>
 			<key>Vectorize</key>
@@ -78,7 +87,7 @@
 			<key>VoodooHDAEnableHalfMicVolumeFix</key>
 			<false/>
 			<key>VoodooHDAEnableHalfVolumeFix</key>
-			<false/>
+			<true/>
 			<key>VoodooHDAEnableMuteFix</key>
 			<false/>
 			<key>VoodooHDAEnableVolumeChangeFix</key>
