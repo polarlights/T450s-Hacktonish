@@ -505,7 +505,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
         OBF6,   8, 
         OBF7,   8, 
         OBF8,   8, 
-        XHCI,   8, 
+        XHC,   8, 
         XTUB,   32, 
         XTUS,   32, 
         XMPB,   32, 
@@ -1047,7 +1047,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
             Store (\SRE1, \_SB.PCI0.EXP1.RID)
             Store (\SRE2, \_SB.PCI0.EXP2.RID)
             Store (\SRE3, \_SB.PCI0.EXP3.RID)
-            Store (\SRU7, \_SB.PCI0.EHC1.RID)
+            Store (\SRU7, \_SB.PCI0.EH01.RID)
             Store (\SRLP, \_SB.PCI0.LPC.RID)
             Store (\SRSA, \_SB.PCI0.SAT1.RID)
             Store (\SRSM, \_SB.PCI0.SMBU.RID)
@@ -2682,9 +2682,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 CreateDWordField (Arg3, 0x00, CDW1)
                 CreateDWordField (Arg3, 0x04, CDW2)
                 CreateDWordField (Arg3, 0x08, CDW3)
-                If (\_SB.PCI0.XHCI.CUID (Arg0))
+                If (\_SB.PCI0.XHC.CUID (Arg0))
                 {
-                    Return (\_SB.PCI0.XHCI.POSC (Arg1, Arg2, Arg3))
+                    Return (\_SB.PCI0.XHC.POSC (Arg1, Arg2, Arg3))
                 }
 
                 If (LEqual (Arg0, ToUUID ("33db4d5b-1ff7-401c-9657-7441c03dd766") /* PCI Host Bridge Device */))
@@ -9199,7 +9199,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 }
             }
 
-            Device (XHCI)
+            Device (XHC)
             {
                 Name (_ADR, 0x00140000)  // _ADR: Address
                 Name (_S3D, 0x03)  // _S3D: S3 Device State
@@ -9211,17 +9211,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 {
                     If (LAnd (LEqual (PCHG, 0x01), LEqual (PCHS, 0x01)))
                     {
-                        Return (LPTH) /* \_SB_.PCI0.XHCI.LPTH */
+                        Return (LPTH) /* \_SB_.PCI0.XHC.LPTH */
                     }
 
                     If (LAnd (LEqual (PCHG, 0x01), LEqual (PCHS, 0x02)))
                     {
-                        Return (LPTL) /* \_SB_.PCI0.XHCI.LPTL */
+                        Return (LPTL) /* \_SB_.PCI0.XHC.LPTL */
                     }
 
                     If (LAnd (LEqual (PCHG, 0x02), LEqual (PCHS, 0x02)))
                     {
-                        Return (WPTL) /* \_SB_.PCI0.XHCI.WPTL */
+                        Return (WPTL) /* \_SB_.PCI0.XHC.WPTL */
                     }
 
                     Return (0x00)
@@ -9303,11 +9303,11 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 {
                     CreateDWordField (Arg2, 0x00, CDW1)
                     CreateDWordField (Arg2, 0x08, CDW3)
-                    If (LEqual (\XHCI, 0x00))
+                    If (LEqual (\XHC, 0x00))
                     {
-                        Or (CDW1, 0x02, CDW1) /* \_SB_.PCI0.XHCI.POSC.CDW1 */
+                        Or (CDW1, 0x02, CDW1) /* \_SB_.PCI0.XHC.POSC.CDW1 */
                         Store (0x00, \_SB.PCI0.LPC.XUSB)
-                        Store (0x00, XRST) /* \_SB_.PCI0.XHCI.XRST */
+                        Store (0x00, XRST) /* \_SB_.PCI0.XHC.XRST */
                     }
 
                     If (LNot (And (CDW1, 0x01)))
@@ -9326,7 +9326,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 }
                                 Else
                                 {
-                                    Or (CDW1, 0x0A, CDW1) /* \_SB_.PCI0.XHCI.POSC.CDW1 */
+                                    Or (CDW1, 0x0A, CDW1) /* \_SB_.PCI0.XHC.POSC.CDW1 */
                                 }
                             }
                             Else
@@ -9337,7 +9337,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 }
                                 Else
                                 {
-                                    Or (CDW1, 0x0A, CDW1) /* \_SB_.PCI0.XHCI.POSC.CDW1 */
+                                    Or (CDW1, 0x0A, CDW1) /* \_SB_.PCI0.XHC.POSC.CDW1 */
                                 }
                             }
                         }
@@ -9345,8 +9345,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                         Return (Arg2)
                     }
 
-                    If (LAnd (LNot (And (CDW1, 0x01)), LOr (LEqual (\XHCI, 
-                        0x02), LEqual (\XHCI, 0x03))))
+                    If (LAnd (LNot (And (CDW1, 0x01)), LOr (LEqual (\XHC, 
+                        0x02), LEqual (\XHC, 0x03))))
                     {
                         SXHC ()
                     }
@@ -9356,12 +9356,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
                 Method (ESEL, 0, Serialized)
                 {
-                    If (LOr (LEqual (\XHCI, 0x02), LEqual (\XHCI, 0x03)))
+                    If (LOr (LEqual (\XHC, 0x02), LEqual (\XHC, 0x03)))
                     {
-                        And (PR3, 0xFFFFFFC0, PR3) /* \_SB_.PCI0.XHCI.PR3_ */
-                        And (PR2, 0xFFFF8000, PR2) /* \_SB_.PCI0.XHCI.PR2_ */
+                        And (PR3, 0xFFFFFFC0, PR3) /* \_SB_.PCI0.XHC.PR3_ */
+                        And (PR2, 0xFFFF8000, PR2) /* \_SB_.PCI0.XHC.PR2_ */
                         Store (0x00, \_SB.PCI0.LPC.XUSB)
-                        Store (0x00, XRST) /* \_SB_.PCI0.XHCI.XRST */
+                        Store (0x00, XRST) /* \_SB_.PCI0.XHC.XRST */
                     }
                 }
 
@@ -9380,15 +9380,15 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 Method (SXHC, 0, NotSerialized)
                 {
                     Store (0x01, \_SB.PCI0.LPC.XUSB)
-                    Store (0x01, XRST) /* \_SB_.PCI0.XHCI.XRST */
+                    Store (0x01, XRST) /* \_SB_.PCI0.XHC.XRST */
                     Store (0x00, Local0)
                     And (PR3, 0xFFFFFFC0, Local0)
-                    Or (Local0, PR3M, PR3) /* \_SB_.PCI0.XHCI.PR3_ */
-                    And (PR3, 0xFFFFFFF7, PR3) /* \_SB_.PCI0.XHCI.PR3_ */
+                    Or (Local0, PR3M, PR3) /* \_SB_.PCI0.XHC.PR3_ */
+                    And (PR3, 0xFFFFFFF7, PR3) /* \_SB_.PCI0.XHC.PR3_ */
                     Store (0x00, Local0)
                     And (PR2, 0xFFFF8000, Local0)
-                    Or (Local0, PR2M, PR2) /* \_SB_.PCI0.XHCI.PR2_ */
-                    And (PR2, 0xFFFFFFF7, PR2) /* \_SB_.PCI0.XHCI.PR2_ */
+                    Or (Local0, PR2M, PR2) /* \_SB_.PCI0.XHC.PR2_ */
+                    And (PR2, 0xFFFFFFF7, PR2) /* \_SB_.PCI0.XHC.PR2_ */
                     Store (0x01, \_SB.PCI0.LPC.XUSB)
                     Store (0x01, \USBR)
                 }
@@ -9420,11 +9420,11 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
                     Store (^MBA1, Local2)
                     Store (^PDBM, Local1)
-                    And (^PDBM, Not (0x06), ^PDBM) /* \_SB_.PCI0.XHCI.PDBM */
+                    And (^PDBM, Not (0x06), ^PDBM) /* \_SB_.PCI0.XHC.PDBM */
                     Store (^D0D3, Local3)
-                    Store (0x00, ^D0D3) /* \_SB_.PCI0.XHCI.D0D3 */
-                    Store (\XWMB, ^MBA1) /* \_SB_.PCI0.XHCI.MBA1 */
-                    Or (Local1, 0x02, ^PDBM) /* \_SB_.PCI0.XHCI.PDBM */
+                    Store (0x00, ^D0D3) /* \_SB_.PCI0.XHC.D0D3 */
+                    Store (\XWMB, ^MBA1) /* \_SB_.PCI0.XHC.MBA1 */
+                    Or (Local1, 0x02, ^PDBM) /* \_SB_.PCI0.XHC.PDBM */
                     OperationRegion (MCA1, SystemMemory, \XWMB, 0x9000)
                     Field (MCA1, DWordAcc, Lock, Preserve)
                     {
@@ -9443,15 +9443,15 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
                     If (LEqual (PCHV (), LPTL))
                     {
-                        Store (0x00, ^MB13) /* \_SB_.PCI0.XHCI.MB13 */
-                        Store (0x00, ^MB14) /* \_SB_.PCI0.XHCI.MB14 */
-                        Store (0x00, CLK0) /* \_SB_.PCI0.XHCI._PS0.CLK0 */
-                        Store (0x00, CLK1) /* \_SB_.PCI0.XHCI._PS0.CLK1 */
+                        Store (0x00, ^MB13) /* \_SB_.PCI0.XHC.MB13 */
+                        Store (0x00, ^MB14) /* \_SB_.PCI0.XHC.MB14 */
+                        Store (0x00, CLK0) /* \_SB_.PCI0.XHC._PS0.CLK0 */
+                        Store (0x00, CLK1) /* \_SB_.PCI0.XHC._PS0.CLK1 */
                     }
 
                     If (LEqual (PCHG, 0x01))
                     {
-                        Store (0x01, CLK2) /* \_SB_.PCI0.XHCI._PS0.CLK2 */
+                        Store (0x01, CLK2) /* \_SB_.PCI0.XHC._PS0.CLK2 */
                     }
 
                     If (LAnd (LEqual (PCHS, 0x02), LEqual (PCHG, 0x01)))
@@ -9481,28 +9481,28 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                         And (PSC1, Not (0x02), Local0)
                         If (LEqual (And (Local0, 0x000203F9), 0x02A0))
                         {
-                            Or (Local0, 0x80000000, PSC1) /* \_SB_.PCI0.XHCI._PS0.PSC1 */
+                            Or (Local0, 0x80000000, PSC1) /* \_SB_.PCI0.XHC._PS0.PSC1 */
                             Or (Local4, 0x01, Local4)
                         }
 
                         And (PSC2, Not (0x02), Local0)
                         If (LEqual (And (Local0, 0x000203F9), 0x02A0))
                         {
-                            Or (Local0, 0x80000000, PSC2) /* \_SB_.PCI0.XHCI._PS0.PSC2 */
+                            Or (Local0, 0x80000000, PSC2) /* \_SB_.PCI0.XHC._PS0.PSC2 */
                             Or (Local4, 0x02, Local4)
                         }
 
                         And (PSC3, Not (0x02), Local0)
                         If (LEqual (And (Local0, 0x000203F9), 0x02A0))
                         {
-                            Or (Local0, 0x80000000, PSC3) /* \_SB_.PCI0.XHCI._PS0.PSC3 */
+                            Or (Local0, 0x80000000, PSC3) /* \_SB_.PCI0.XHC._PS0.PSC3 */
                             Or (Local4, 0x04, Local4)
                         }
 
                         And (PSC4, Not (0x02), Local0)
                         If (LEqual (And (Local0, 0x000203F9), 0x02A0))
                         {
-                            Or (Local0, 0x80000000, PSC4) /* \_SB_.PCI0.XHCI._PS0.PSC4 */
+                            Or (Local0, 0x80000000, PSC4) /* \_SB_.PCI0.XHC._PS0.PSC4 */
                             Or (Local4, 0x08, Local4)
                         }
 
@@ -9523,53 +9523,53 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                             If (And (Local4, 0x01))
                             {
                                 And (PSC1, Not (0x02), Local0)
-                                Or (Local0, 0x00FE0000, PSC1) /* \_SB_.PCI0.XHCI._PS0.PSC1 */
+                                Or (Local0, 0x00FE0000, PSC1) /* \_SB_.PCI0.XHC._PS0.PSC1 */
                             }
 
                             If (And (Local4, 0x02))
                             {
                                 And (PSC2, Not (0x02), Local0)
-                                Or (Local0, 0x00FE0000, PSC2) /* \_SB_.PCI0.XHCI._PS0.PSC2 */
+                                Or (Local0, 0x00FE0000, PSC2) /* \_SB_.PCI0.XHC._PS0.PSC2 */
                             }
 
                             If (And (Local4, 0x04))
                             {
                                 And (PSC3, Not (0x02), Local0)
-                                Or (Local0, 0x00FE0000, PSC3) /* \_SB_.PCI0.XHCI._PS0.PSC3 */
+                                Or (Local0, 0x00FE0000, PSC3) /* \_SB_.PCI0.XHC._PS0.PSC3 */
                             }
 
                             If (And (Local4, 0x08))
                             {
                                 And (PSC4, Not (0x02), Local0)
-                                Or (Local0, 0x00FE0000, PSC4) /* \_SB_.PCI0.XHCI._PS0.PSC4 */
+                                Or (Local0, 0x00FE0000, PSC4) /* \_SB_.PCI0.XHC._PS0.PSC4 */
                             }
                         }
 
-                        Store (0x01, AX15) /* \_SB_.PCI0.XHCI._PS0.AX15 */
+                        Store (0x01, AX15) /* \_SB_.PCI0.XHC._PS0.AX15 */
                     }
 
                     If (LOr (LEqual (PCHG, 0x01), LAnd (LEqual (PCHV (), WPTL), LEqual (
                         PCHP, 0x41))))
                     {
-                        Store (0x00, ^SWAI) /* \_SB_.PCI0.XHCI.SWAI */
-                        Store (0x00, ^SAIP) /* \_SB_.PCI0.XHCI.SAIP */
+                        Store (0x00, ^SWAI) /* \_SB_.PCI0.XHC.SWAI */
+                        Store (0x00, ^SAIP) /* \_SB_.PCI0.XHC.SAIP */
                     }
 
-                    And (^PDBM, Not (0x02), ^PDBM) /* \_SB_.PCI0.XHCI.PDBM */
-                    Store (Local2, ^MBA1) /* \_SB_.PCI0.XHCI.MBA1 */
-                    Store (Local1, ^PDBM) /* \_SB_.PCI0.XHCI.PDBM */
+                    And (^PDBM, Not (0x02), ^PDBM) /* \_SB_.PCI0.XHC.PDBM */
+                    Store (Local2, ^MBA1) /* \_SB_.PCI0.XHC.MBA1 */
+                    Store (Local1, ^PDBM) /* \_SB_.PCI0.XHC.PDBM */
                 }
 
                 Method (_PS3, 0, Serialized)  // _PS3: Power State 3
                 {
                     Store (^PDBM, Local1)
                     Store (^MBA1, Local2)
-                    And (^PDBM, Not (0x06), ^PDBM) /* \_SB_.PCI0.XHCI.PDBM */
-                    Store (0x00, ^D0D3) /* \_SB_.PCI0.XHCI.D0D3 */
-                    Store (\XWMB, ^MBA1) /* \_SB_.PCI0.XHCI.MBA1 */
-                    Or (Local1, 0x02, ^PDBM) /* \_SB_.PCI0.XHCI.PDBM */
-                    Store (0x01, ^PMES) /* \_SB_.PCI0.XHCI.PMES */
-                    Store (0x01, ^PMEE) /* \_SB_.PCI0.XHCI.PMEE */
+                    And (^PDBM, Not (0x06), ^PDBM) /* \_SB_.PCI0.XHC.PDBM */
+                    Store (0x00, ^D0D3) /* \_SB_.PCI0.XHC.D0D3 */
+                    Store (\XWMB, ^MBA1) /* \_SB_.PCI0.XHC.MBA1 */
+                    Or (Local1, 0x02, ^PDBM) /* \_SB_.PCI0.XHC.PDBM */
+                    Store (0x01, ^PMES) /* \_SB_.PCI0.XHC.PMES */
+                    Store (0x01, ^PMEE) /* \_SB_.PCI0.XHC.PMEE */
                     Store (\XWMB, Local0)
                     OperationRegion (MCA1, SystemMemory, \XWMB, 0x9000)
                     Field (MCA1, DWordAcc, Lock, Preserve)
@@ -9590,33 +9590,33 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
 
                     If (LEqual (PCHV (), LPTL))
                     {
-                        Store (0x01, ^MB13) /* \_SB_.PCI0.XHCI.MB13 */
-                        Store (0x01, ^MB14) /* \_SB_.PCI0.XHCI.MB14 */
-                        Store (0x01, CLK0) /* \_SB_.PCI0.XHCI._PS3.CLK0 */
-                        Store (0x01, CLK1) /* \_SB_.PCI0.XHCI._PS3.CLK1 */
+                        Store (0x01, ^MB13) /* \_SB_.PCI0.XHC.MB13 */
+                        Store (0x01, ^MB14) /* \_SB_.PCI0.XHC.MB14 */
+                        Store (0x01, CLK0) /* \_SB_.PCI0.XHC._PS3.CLK0 */
+                        Store (0x01, CLK1) /* \_SB_.PCI0.XHC._PS3.CLK1 */
                     }
 
                     If (LEqual (PCHG, 0x01))
                     {
-                        Store (0x00, CLK2) /* \_SB_.PCI0.XHCI._PS3.CLK2 */
+                        Store (0x00, CLK2) /* \_SB_.PCI0.XHC._PS3.CLK2 */
                     }
 
                     If (LAnd (LEqual (PCHS, 0x02), LEqual (PCHG, 0x01)))
                     {
-                        Store (0x00, AX15) /* \_SB_.PCI0.XHCI._PS3.AX15 */
+                        Store (0x00, AX15) /* \_SB_.PCI0.XHC._PS3.AX15 */
                     }
 
                     If (LOr (LEqual (PCHG, 0x01), LAnd (LEqual (PCHV (), WPTL), LEqual (
                         PCHP, 0x41))))
                     {
-                        Store (0x01, ^SWAI) /* \_SB_.PCI0.XHCI.SWAI */
-                        Store (0x01, ^SAIP) /* \_SB_.PCI0.XHCI.SAIP */
+                        Store (0x01, ^SWAI) /* \_SB_.PCI0.XHC.SWAI */
+                        Store (0x01, ^SAIP) /* \_SB_.PCI0.XHC.SAIP */
                     }
 
-                    And (^PDBM, Not (0x02), ^PDBM) /* \_SB_.PCI0.XHCI.PDBM */
-                    Store (0x03, ^D0D3) /* \_SB_.PCI0.XHCI.D0D3 */
-                    Store (Local2, ^MBA1) /* \_SB_.PCI0.XHCI.MBA1 */
-                    Store (Local1, ^PDBM) /* \_SB_.PCI0.XHCI.PDBM */
+                    And (^PDBM, Not (0x02), ^PDBM) /* \_SB_.PCI0.XHC.PDBM */
+                    Store (0x03, ^D0D3) /* \_SB_.PCI0.XHC.D0D3 */
+                    Store (Local2, ^MBA1) /* \_SB_.PCI0.XHC.MBA1 */
+                    Store (Local1, ^PDBM) /* \_SB_.PCI0.XHC.PDBM */
                 }
 
                 Device (URTH)
@@ -9634,26 +9634,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPC0, UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP0._UPC.UPCP */
+                            CopyObject (\UPC0, UPCP) /* \_SB_.PCI0.XHC.URTH.HSP0._UPC.UPCP */
                             If (LNot (And (PR2, 0x01)))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP0._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.HSP0._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLD0, PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP0._PLD.PLDP */
+                            Store (\PLD0, PLDP) /* \_SB_.PCI0.XHC.URTH.HSP0._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LNot (And (PR2, 0x01)))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.HSP0._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.HSP0._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP0._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.HSP0._PLD.PLDP */
                         }
                     }
 
@@ -9669,26 +9669,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPC1, UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP1._UPC.UPCP */
+                            CopyObject (\UPC1, UPCP) /* \_SB_.PCI0.XHC.URTH.HSP1._UPC.UPCP */
                             If (LNot (And (PR2, 0x02)))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP1._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.HSP1._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLD1, PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP1._PLD.PLDP */
+                            Store (\PLD1, PLDP) /* \_SB_.PCI0.XHC.URTH.HSP1._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LNot (And (PR2, 0x02)))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.HSP1._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.HSP1._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP1._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.HSP1._PLD.PLDP */
                         }
                     }
 
@@ -9704,26 +9704,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPC2, UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP2._UPC.UPCP */
+                            CopyObject (\UPC2, UPCP) /* \_SB_.PCI0.XHC.URTH.HSP2._UPC.UPCP */
                             If (LNot (And (PR2, 0x04)))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP2._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.HSP2._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLD2, PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP2._PLD.PLDP */
+                            Store (\PLD2, PLDP) /* \_SB_.PCI0.XHC.URTH.HSP2._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LNot (And (PR2, 0x04)))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.HSP2._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.HSP2._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP2._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.HSP2._PLD.PLDP */
                         }
                     }
 
@@ -9739,26 +9739,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPC3, UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP3._UPC.UPCP */
+                            CopyObject (\UPC3, UPCP) /* \_SB_.PCI0.XHC.URTH.HSP3._UPC.UPCP */
                             If (LNot (And (PR2, 0x08)))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP3._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.HSP3._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLD3, PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP3._PLD.PLDP */
+                            Store (\PLD3, PLDP) /* \_SB_.PCI0.XHC.URTH.HSP3._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LNot (And (PR2, 0x08)))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.HSP3._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.HSP3._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP3._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.HSP3._PLD.PLDP */
                         }
                     }
 
@@ -9774,26 +9774,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP4._UPC.UPCP */
+                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.XHC.URTH.HSP4._UPC.UPCP */
                             If (LNot (And (PR2, 0x10)))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP4._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.HSP4._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLDI, PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP4._PLD.PLDP */
+                            Store (\PLDI, PLDP) /* \_SB_.PCI0.XHC.URTH.HSP4._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LNot (And (PR2, 0x10)))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.HSP4._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.HSP4._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP4._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.HSP4._PLD.PLDP */
                         }
                     }
 
@@ -9809,26 +9809,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP5._UPC.UPCP */
+                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.XHC.URTH.HSP5._UPC.UPCP */
                             If (LNot (And (PR2, 0x20)))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP5._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.HSP5._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLDI, PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP5._PLD.PLDP */
+                            Store (\PLDI, PLDP) /* \_SB_.PCI0.XHC.URTH.HSP5._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LNot (And (PR2, 0x20)))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.HSP5._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.HSP5._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP5._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.HSP5._PLD.PLDP */
                         }
                     }
 
@@ -9844,26 +9844,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP6._UPC.UPCP */
+                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.XHC.URTH.HSP6._UPC.UPCP */
                             If (LNot (And (PR2, 0x40)))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP6._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.HSP6._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLDI, PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP6._PLD.PLDP */
+                            Store (\PLDI, PLDP) /* \_SB_.PCI0.XHC.URTH.HSP6._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LNot (And (PR2, 0x40)))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.HSP6._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.HSP6._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP6._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.HSP6._PLD.PLDP */
                         }
                     }
 
@@ -9879,26 +9879,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP7._UPC.UPCP */
+                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.XHC.URTH.HSP7._UPC.UPCP */
                             If (LNot (And (PR2, 0x80)))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.HSP7._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.HSP7._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLDI, PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP7._PLD.PLDP */
+                            Store (\PLDI, PLDP) /* \_SB_.PCI0.XHC.URTH.HSP7._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LNot (And (PR2, 0x80)))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.HSP7._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.HSP7._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.HSP7._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.HSP7._PLD.PLDP */
                         }
 
                         Device (WCAM)
@@ -9951,28 +9951,28 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPC0, UPCP) /* \_SB_.PCI0.XHCI.URTH.SSP0._UPC.UPCP */
+                            CopyObject (\UPC0, UPCP) /* \_SB_.PCI0.XHC.URTH.SSP0._UPC.UPCP */
                             If (LOr (LNot (And (PR2, 0x01)), LNot (And (PR3, 
                                 0x01))))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.SSP0._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.SSP0._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLD0, PLDP) /* \_SB_.PCI0.XHCI.URTH.SSP0._PLD.PLDP */
+                            Store (\PLD0, PLDP) /* \_SB_.PCI0.XHC.URTH.SSP0._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LOr (LNot (And (PR2, 0x01)), LNot (And (PR3, 
                                 0x01))))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.SSP0._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.SSP0._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.SSP0._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.SSP0._PLD.PLDP */
                         }
                     }
 
@@ -9999,28 +9999,28 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPC1, UPCP) /* \_SB_.PCI0.XHCI.URTH.SSP1._UPC.UPCP */
+                            CopyObject (\UPC1, UPCP) /* \_SB_.PCI0.XHC.URTH.SSP1._UPC.UPCP */
                             If (LOr (LNot (And (PR2, 0x02)), LNot (And (PR3, 
                                 0x02))))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.SSP1._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.SSP1._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLD1, PLDP) /* \_SB_.PCI0.XHCI.URTH.SSP1._PLD.PLDP */
+                            Store (\PLD1, PLDP) /* \_SB_.PCI0.XHC.URTH.SSP1._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LOr (LNot (And (PR2, 0x02)), LNot (And (PR3, 
                                 0x02))))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.SSP1._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.SSP1._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.SSP1._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.SSP1._PLD.PLDP */
                         }
                     }
 
@@ -10047,28 +10047,28 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPC2, UPCP) /* \_SB_.PCI0.XHCI.URTH.SSP2._UPC.UPCP */
+                            CopyObject (\UPC2, UPCP) /* \_SB_.PCI0.XHC.URTH.SSP2._UPC.UPCP */
                             If (LOr (LNot (And (PR2, 0x04)), LNot (And (PR3, 
                                 0x04))))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.SSP2._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.SSP2._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLD2, PLDP) /* \_SB_.PCI0.XHCI.URTH.SSP2._PLD.PLDP */
+                            Store (\PLD2, PLDP) /* \_SB_.PCI0.XHC.URTH.SSP2._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LOr (LNot (And (PR2, 0x04)), LNot (And (PR3, 
                                 0x04))))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.SSP2._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.SSP2._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.SSP2._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.SSP2._PLD.PLDP */
                         }
                     }
 
@@ -10095,34 +10095,34 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPC3, UPCP) /* \_SB_.PCI0.XHCI.URTH.SSP3._UPC.UPCP */
+                            CopyObject (\UPC3, UPCP) /* \_SB_.PCI0.XHC.URTH.SSP3._UPC.UPCP */
                             If (LOr (LNot (And (PR2, 0x04)), LNot (And (PR3, 
                                 0x04))))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.XHCI.URTH.SSP3._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.XHC.URTH.SSP3._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLD3, PLDP) /* \_SB_.PCI0.XHCI.URTH.SSP3._PLD.PLDP */
+                            Store (\PLD3, PLDP) /* \_SB_.PCI0.XHC.URTH.SSP3._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
                             If (LOr (LNot (And (PR2, 0x04)), LNot (And (PR3, 
                                 0x04))))
                             {
-                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHCI.URTH.SSP3._PLD.VIS_ */
+                                And (VIS, 0x00, VIS) /* \_SB_.PCI0.XHC.URTH.SSP3._PLD.VIS_ */
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.XHCI.URTH.SSP3._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.XHC.URTH.SSP3._PLD.PLDP */
                         }
                     }
                 }
             }
 
-            Device (EHC1)
+            Device (EH01)
             {
                 Name (_ADR, 0x001D0000)  // _ADR: Address
                 Name (_S3D, 0x03)  // _S3D: S3 Device State
@@ -10150,8 +10150,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 })
                 Method (_INI, 0, NotSerialized)  // _INI: Initialize
                 {
-                    Store (0x01, PWKI) /* \_SB_.PCI0.EHC1.PWKI */
-                    Store (0x23, PWUC) /* \_SB_.PCI0.EHC1.PWUC */
+                    Store (0x01, PWKI) /* \_SB_.PCI0.EH01.PWKI */
+                    Store (0x23, PWUC) /* \_SB_.PCI0.EH01.PWUC */
                 }
 
                 Name (_PRW, Package (0x03)  // _PRW: Power Resources for Wake
@@ -10188,33 +10188,33 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                     0x00, 
                                     0x00
                                 })
-                                CopyObject (\UPC0, UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT0._UPC.UPCP */
-                                If (LEqual (\XHCI, 0x00)) {}
+                                CopyObject (\UPC0, UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT0._UPC.UPCP */
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x01))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x01))
                                     {
                                         Store (0x00, Index (UPCP, 0x00))
                                     }
                                 }
 
-                                Return (UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT0._UPC.UPCP */
+                                Return (UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT0._UPC.UPCP */
                             }
 
                             Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
-                                Store (\PLD0, PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT0._PLD.PLDP */
+                                Store (\PLD0, PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT0._PLD.PLDP */
                                 CreateBitField (PLDP, 0x40, VIS)
-                                If (LEqual (\XHCI, 0x00)) {}
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x01))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x01))
                                     {
-                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT0._PLD.VIS_ */
+                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EH01.URTH.URMH.PRT0._PLD.VIS_ */
                                     }
 
-                                    Return (PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT0._PLD.PLDP */
+                                    Return (PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT0._PLD.PLDP */
                                 }
                             }
                         }
@@ -10231,34 +10231,34 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                     0x00, 
                                     0x00
                                 })
-                                CopyObject (\UPC1, UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT1._UPC.UPCP */
-                                If (LEqual (\XHCI, 0x00)) {}
+                                CopyObject (\UPC1, UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT1._UPC.UPCP */
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x02))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x02))
                                     {
                                         Store (0x00, Index (UPCP, 0x00))
                                     }
                                 }
 
-                                Return (UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT1._UPC.UPCP */
+                                Return (UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT1._UPC.UPCP */
                             }
 
                             Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
-                                Store (\PLD1, PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT1._PLD.PLDP */
+                                Store (\PLD1, PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT1._PLD.PLDP */
                                 CreateBitField (PLDP, 0x40, VIS)
-                                If (LEqual (\XHCI, 0x00)) {}
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x02))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x02))
                                     {
-                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT1._PLD.VIS_ */
+                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EH01.URTH.URMH.PRT1._PLD.VIS_ */
                                     }
                                 }
 
-                                Return (PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT1._PLD.PLDP */
+                                Return (PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT1._PLD.PLDP */
                             }
                         }
 
@@ -10274,34 +10274,34 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                     0x00, 
                                     0x00
                                 })
-                                CopyObject (\UPC2, UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT2._UPC.UPCP */
-                                If (LEqual (\XHCI, 0x00)) {}
+                                CopyObject (\UPC2, UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT2._UPC.UPCP */
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x04))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x04))
                                     {
                                         Store (0x00, Index (UPCP, 0x00))
                                     }
                                 }
 
-                                Return (UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT2._UPC.UPCP */
+                                Return (UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT2._UPC.UPCP */
                             }
 
                             Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
-                                Store (\PLD2, PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT2._PLD.PLDP */
+                                Store (\PLD2, PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT2._PLD.PLDP */
                                 CreateBitField (PLDP, 0x40, VIS)
-                                If (LEqual (\XHCI, 0x00)) {}
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x04))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x04))
                                     {
-                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT2._PLD.VIS_ */
+                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EH01.URTH.URMH.PRT2._PLD.VIS_ */
                                     }
                                 }
 
-                                Return (PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT2._PLD.PLDP */
+                                Return (PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT2._PLD.PLDP */
                             }
                         }
 
@@ -10317,34 +10317,34 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                     0x00, 
                                     0x00
                                 })
-                                CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT3._UPC.UPCP */
-                                If (LEqual (\XHCI, 0x00)) {}
+                                CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT3._UPC.UPCP */
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x08))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x08))
                                     {
                                         Store (0x00, Index (UPCP, 0x00))
                                     }
                                 }
 
-                                Return (UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT3._UPC.UPCP */
+                                Return (UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT3._UPC.UPCP */
                             }
 
                             Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
-                                Store (\PLD3, PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT3._PLD.PLDP */
+                                Store (\PLD3, PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT3._PLD.PLDP */
                                 CreateBitField (PLDP, 0x40, VIS)
-                                If (LEqual (\XHCI, 0x00)) {}
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x08))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x08))
                                     {
-                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT3._PLD.VIS_ */
+                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EH01.URTH.URMH.PRT3._PLD.VIS_ */
                                     }
                                 }
 
-                                Return (PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT3._PLD.PLDP */
+                                Return (PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT3._PLD.PLDP */
                             }
                         }
 
@@ -10360,34 +10360,34 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                     0x00, 
                                     0x00
                                 })
-                                CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT4._UPC.UPCP */
-                                If (LEqual (\XHCI, 0x00)) {}
+                                CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT4._UPC.UPCP */
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x10))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x10))
                                     {
                                         Store (0x00, Index (UPCP, 0x00))
                                     }
                                 }
 
-                                Return (UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT4._UPC.UPCP */
+                                Return (UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT4._UPC.UPCP */
                             }
 
                             Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
-                                Store (\PLDI, PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT4._PLD.PLDP */
+                                Store (\PLDI, PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT4._PLD.PLDP */
                                 CreateBitField (PLDP, 0x40, VIS)
-                                If (LEqual (\XHCI, 0x00)) {}
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x10))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x10))
                                     {
-                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT4._PLD.VIS_ */
+                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EH01.URTH.URMH.PRT4._PLD.VIS_ */
                                     }
                                 }
 
-                                Return (PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT4._PLD.PLDP */
+                                Return (PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT4._PLD.PLDP */
                             }
                         }
 
@@ -10403,34 +10403,34 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                     0x00, 
                                     0x00
                                 })
-                                CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT5._UPC.UPCP */
-                                If (LEqual (\XHCI, 0x00)) {}
+                                CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT5._UPC.UPCP */
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x20))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x20))
                                     {
                                         Store (0x00, Index (UPCP, 0x00))
                                     }
                                 }
 
-                                Return (UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT5._UPC.UPCP */
+                                Return (UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT5._UPC.UPCP */
                             }
 
                             Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
-                                Store (\PLDI, PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT5._PLD.PLDP */
+                                Store (\PLDI, PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT5._PLD.PLDP */
                                 CreateBitField (PLDP, 0x40, VIS)
-                                If (LEqual (\XHCI, 0x00)) {}
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x20))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x20))
                                     {
-                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT5._PLD.VIS_ */
+                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EH01.URTH.URMH.PRT5._PLD.VIS_ */
                                     }
                                 }
 
-                                Return (PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT5._PLD.PLDP */
+                                Return (PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT5._PLD.PLDP */
                             }
                         }
 
@@ -10446,34 +10446,34 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                     0x00, 
                                     0x00
                                 })
-                                CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT6._UPC.UPCP */
-                                If (LEqual (\XHCI, 0x00)) {}
+                                CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT6._UPC.UPCP */
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x40))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x40))
                                     {
                                         Store (0x00, Index (UPCP, 0x00))
                                     }
                                 }
 
-                                Return (UPCP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT6._UPC.UPCP */
+                                Return (UPCP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT6._UPC.UPCP */
                             }
 
                             Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
-                                Store (\PLDI, PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT6._PLD.PLDP */
+                                Store (\PLDI, PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT6._PLD.PLDP */
                                 CreateBitField (PLDP, 0x40, VIS)
-                                If (LEqual (\XHCI, 0x00)) {}
+                                If (LEqual (\XHC, 0x00)) {}
                                 Else
                                 {
-                                    If (And (\_SB.PCI0.XHCI.PR2, 0x40))
+                                    If (And (\_SB.PCI0.XHC.PR2, 0x40))
                                     {
-                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT6._PLD.VIS_ */
+                                        And (VIS, 0x00, VIS) /* \_SB_.PCI0.EH01.URTH.URMH.PRT6._PLD.VIS_ */
                                     }
                                 }
 
-                                Return (PLDP) /* \_SB_.PCI0.EHC1.URTH.URMH.PRT6._PLD.PLDP */
+                                Return (PLDP) /* \_SB_.PCI0.EH01.URTH.URMH.PRT6._PLD.PLDP */
                             }
                         }
 
@@ -10530,37 +10530,37 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                                 0x00, 
                                 0x00
                             })
-                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EHC1.URTH.PRT3._UPC.UPCP */
-                            If (LEqual (\XHCI, 0x00))
+                            CopyObject (\UPCI, UPCP) /* \_SB_.PCI0.EH01.URTH.PRT3._UPC.UPCP */
+                            If (LEqual (\XHC, 0x00))
                             {
                                 Store (0x00, Index (UPCP, 0x00))
                             }
                             Else
                             {
-                                If (And (\_SB.PCI0.XHCI.PR2, 0x40))
+                                If (And (\_SB.PCI0.XHC.PR2, 0x40))
                                 {
                                     Store (0x00, Index (UPCP, 0x00))
                                 }
                             }
 
-                            Return (UPCP) /* \_SB_.PCI0.EHC1.URTH.PRT3._UPC.UPCP */
+                            Return (UPCP) /* \_SB_.PCI0.EH01.URTH.PRT3._UPC.UPCP */
                         }
 
                         Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
-                            Store (\PLDI, PLDP) /* \_SB_.PCI0.EHC1.URTH.PRT3._PLD.PLDP */
+                            Store (\PLDI, PLDP) /* \_SB_.PCI0.EH01.URTH.PRT3._PLD.PLDP */
                             CreateBitField (PLDP, 0x40, VIS)
-                            If (LEqual (\XHCI, 0x00)) {}
+                            If (LEqual (\XHC, 0x00)) {}
                             Else
                             {
-                                If (And (\_SB.PCI0.XHCI.PR2, 0x40))
+                                If (And (\_SB.PCI0.XHC.PR2, 0x40))
                                 {
-                                    And (VIS, 0x00, VIS) /* \_SB_.PCI0.EHC1.URTH.PRT3._PLD.VIS_ */
+                                    And (VIS, 0x00, VIS) /* \_SB_.PCI0.EH01.URTH.PRT3._PLD.VIS_ */
                                 }
                             }
 
-                            Return (PLDP) /* \_SB_.PCI0.EHC1.URTH.PRT3._PLD.PLDP */
+                            Return (PLDP) /* \_SB_.PCI0.EH01.URTH.PRT3._PLD.PLDP */
                         }
                     }
                 }
@@ -15110,18 +15110,18 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 Store (0x00, \CMPR)
             }
 
-            If (LOr (\USBR, \_SB.PCI0.XHCI.XRST))
+            If (LOr (\USBR, \_SB.PCI0.XHC.XRST))
             {
-                If (LOr (LEqual (\XHCI, 0x02), LEqual (\XHCI, 0x03)))
+                If (LOr (LEqual (\XHC, 0x02), LEqual (\XHC, 0x03)))
                 {
                     Store (0x00, Local0)
-                    And (\_SB.PCI0.XHCI.PR3, 0xFFFFFFC0, Local0)
-                    Or (Local0, \_SB.PCI0.XHCI.PR3M, \_SB.PCI0.XHCI.PR3)
-                    And (\_SB.PCI0.XHCI.PR3, 0xFFFFFFF7, \_SB.PCI0.XHCI.PR3)
+                    And (\_SB.PCI0.XHC.PR3, 0xFFFFFFC0, Local0)
+                    Or (Local0, \_SB.PCI0.XHC.PR3M, \_SB.PCI0.XHC.PR3)
+                    And (\_SB.PCI0.XHC.PR3, 0xFFFFFFF7, \_SB.PCI0.XHC.PR3)
                     Store (0x00, Local0)
-                    And (\_SB.PCI0.XHCI.PR2, 0xFFFF8000, Local0)
-                    Or (Local0, \_SB.PCI0.XHCI.PR2M, \_SB.PCI0.XHCI.PR2)
-                    And (\_SB.PCI0.XHCI.PR2, 0xFFFFFFF7, \_SB.PCI0.XHCI.PR2)
+                    And (\_SB.PCI0.XHC.PR2, 0xFFFF8000, Local0)
+                    Or (Local0, \_SB.PCI0.XHC.PR2M, \_SB.PCI0.XHC.PR2)
+                    And (\_SB.PCI0.XHC.PR2, 0xFFFFFFF7, \_SB.PCI0.XHC.PR2)
                 }
             }
         }
@@ -15164,18 +15164,18 @@ DefinitionBlock ("DSDT.aml", "DSDT", 1, "LENOVO", "TP-JB   ", 0x00001180)
                 }
             }
 
-            If (\_SB.PCI0.XHCI.XRST)
+            If (\_SB.PCI0.XHC.XRST)
             {
-                If (LOr (LEqual (\XHCI, 0x02), LEqual (\XHCI, 0x03)))
+                If (LOr (LEqual (\XHC, 0x02), LEqual (\XHC, 0x03)))
                 {
                     Store (0x00, Local0)
-                    And (\_SB.PCI0.XHCI.PR3, 0xFFFFFFC0, Local0)
-                    Or (Local0, \_SB.PCI0.XHCI.PR3M, \_SB.PCI0.XHCI.PR3)
-                    And (\_SB.PCI0.XHCI.PR3, 0xFFFFFFF7, \_SB.PCI0.XHCI.PR3)
+                    And (\_SB.PCI0.XHC.PR3, 0xFFFFFFC0, Local0)
+                    Or (Local0, \_SB.PCI0.XHC.PR3M, \_SB.PCI0.XHC.PR3)
+                    And (\_SB.PCI0.XHC.PR3, 0xFFFFFFF7, \_SB.PCI0.XHC.PR3)
                     Store (0x00, Local0)
-                    And (\_SB.PCI0.XHCI.PR2, 0xFFFF8000, Local0)
-                    Or (Local0, \_SB.PCI0.XHCI.PR2M, \_SB.PCI0.XHCI.PR2)
-                    And (\_SB.PCI0.XHCI.PR2, 0xFFFFFFF7, \_SB.PCI0.XHCI.PR2)
+                    And (\_SB.PCI0.XHC.PR2, 0xFFFF8000, Local0)
+                    Or (Local0, \_SB.PCI0.XHC.PR2M, \_SB.PCI0.XHC.PR2)
+                    And (\_SB.PCI0.XHC.PR2, 0xFFFFFFF7, \_SB.PCI0.XHC.PR2)
                 }
             }
         }
