@@ -1,9 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20140926-64 [Oct 24 2014]
+ * AML/ASL+ Disassembler version 20141107-64 [Dec 17 2014]
  * Copyright (c) 2000 - 2014 Intel Corporation
  * 
- * Disassembly of SSDT2.aml, Mon Nov 16 13:45:48 2015
+ * Disassembling to non-symbolic legacy ASL operators
+ *
+ * Disassembly of SSDT1.aml, Thu Dec 10 22:15:49 2015
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -16,7 +18,7 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20120711 (538052369)
  */
-DefinitionBlock ("SSDT2.aml", "SSDT", 1, "LENOVO", "TP-SSDT2", 0x00000200)
+DefinitionBlock ("SSDT1.aml", "SSDT", 1, "LENOVO", "TP-SSDT2", 0x00000200)
 {
 
     External (_SB_.PCI0.LPC_.EC__.BFRQ, MethodObj)    // 0 Arguments
@@ -50,7 +52,7 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "LENOVO", "TP-SSDT2", 0x00000200)
         {
             If (\WVIS)
             {
-                Store (0x01, \NBCF) /* External reference */
+                Store (0x01, \NBCF)
             }
 
             Store (\_SB.PCI0.LPC.EC.BFRQ (), Local0)
@@ -169,7 +171,7 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "LENOVO", "TP-SSDT2", 0x00000200)
                 })
             }
 
-            Return (\_SB.PCI0.LPC.EC.BRTW) /* External reference */
+            Return (\_SB.PCI0.LPC.EC.BRTW)
         }
 
         Method (_BCM, 1, NotSerialized)  // _BCM: Brightness Control Method
@@ -184,7 +186,7 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "LENOVO", "TP-SSDT2", 0x00000200)
                 If (LNotEqual (Local0, Ones))
                 {
                     Subtract (Local0, 0x02, Local1)
-                    Store (Local1, \BRLV) /* External reference */
+                    Store (Local1, \BRLV)
                     \_SB.PCI0.LPC.EC.BRNS ()
                     \UCMS (0x16)
                 }
@@ -212,7 +214,7 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "LENOVO", "TP-SSDT2", 0x00000200)
         {
             If (\WVIS)
             {
-                Store (0x01, \NBCF) /* External reference */
+                Store (0x01, \NBCF)
             }
 
             If (\WIN8)
@@ -325,7 +327,7 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "LENOVO", "TP-SSDT2", 0x00000200)
                 })
             }
 
-            Return (\_SB.PCI0.LPC.EC.BRTW) /* External reference */
+            Return (\_SB.PCI0.LPC.EC.BRTW)
         }
 
         Method (_BCM, 1, NotSerialized)  // _BCM: Brightness Control Method
@@ -343,7 +345,7 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "LENOVO", "TP-SSDT2", 0x00000200)
                     {
                         Subtract (Local0, 0x02, Local1)
                         \VBRC (Local1)
-                        Store (Local1, \BRLV) /* External reference */
+                        Store (Local1, \BRLV)
                     }
                 }
             }

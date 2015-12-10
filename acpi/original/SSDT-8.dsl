@@ -1,9 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20140926-64 [Oct 24 2014]
+ * AML/ASL+ Disassembler version 20141107-64 [Dec 17 2014]
  * Copyright (c) 2000 - 2014 Intel Corporation
  * 
- * Disassembly of SSDT9.aml, Mon Nov 16 13:45:48 2015
+ * Disassembling to non-symbolic legacy ASL operators
+ *
+ * Disassembly of SSDT8.aml, Thu Dec 10 22:15:50 2015
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -16,7 +18,7 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20120711 (538052369)
  */
-DefinitionBlock ("SSDT9.aml", "SSDT", 2, "LENOVO", "CppcTabl", 0x00001000)
+DefinitionBlock ("SSDT8.aml", "SSDT", 2, "LENOVO", "CppcTabl", 0x00001000)
 {
 
     External (_PR_.CPU0, ProcessorObj)
@@ -64,7 +66,7 @@ DefinitionBlock ("SSDT9.aml", "SSDT", 2, "LENOVO", "CppcTabl", 0x00001000)
             {
                 Store (PCCA, Index (TMPP, Zero))
                 Store (PCCS, Index (TMPP, One))
-                Return (TMPP) /* \_SB_.PCCD.TMPP */
+                Return (TMPP)
             }
 
             Method (GPRN, 0, Serialized)
@@ -72,37 +74,37 @@ DefinitionBlock ("SSDT9.aml", "SSDT", 2, "LENOVO", "CppcTabl", 0x00001000)
                 Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 While (One)
                 {
-                    Store (ToInteger (\TCNT), _T_0) /* \_SB_.PCCD.GPRN._T_0 */
+                    Store (ToInteger (\TCNT), _T_0)
                     If (LEqual (_T_0, 0x08))
                     {
-                        Notify (\_PR.CPU0, 0x83) // Device-Specific Change
-                        Notify (\_PR.CPU1, 0x83) // Device-Specific Change
-                        Notify (\_PR.CPU2, 0x83) // Device-Specific Change
-                        Notify (\_PR.CPU3, 0x83) // Device-Specific Change
-                        Notify (\_PR.CPU4, 0x83) // Device-Specific Change
-                        Notify (\_PR.CPU5, 0x83) // Device-Specific Change
-                        Notify (\_PR.CPU6, 0x83) // Device-Specific Change
-                        Notify (\_PR.CPU7, 0x83) // Device-Specific Change
+                        Notify (\_PR.CPU0, 0x83)
+                        Notify (\_PR.CPU1, 0x83)
+                        Notify (\_PR.CPU2, 0x83)
+                        Notify (\_PR.CPU3, 0x83)
+                        Notify (\_PR.CPU4, 0x83)
+                        Notify (\_PR.CPU5, 0x83)
+                        Notify (\_PR.CPU6, 0x83)
+                        Notify (\_PR.CPU7, 0x83)
                     }
                     Else
                     {
                         If (LEqual (_T_0, 0x04))
                         {
-                            Notify (\_PR.CPU0, 0x83) // Device-Specific Change
-                            Notify (\_PR.CPU1, 0x83) // Device-Specific Change
-                            Notify (\_PR.CPU2, 0x83) // Device-Specific Change
-                            Notify (\_PR.CPU3, 0x83) // Device-Specific Change
+                            Notify (\_PR.CPU0, 0x83)
+                            Notify (\_PR.CPU1, 0x83)
+                            Notify (\_PR.CPU2, 0x83)
+                            Notify (\_PR.CPU3, 0x83)
                         }
                         Else
                         {
                             If (LEqual (_T_0, 0x02))
                             {
-                                Notify (\_PR.CPU0, 0x83) // Device-Specific Change
-                                Notify (\_PR.CPU1, 0x83) // Device-Specific Change
+                                Notify (\_PR.CPU0, 0x83)
+                                Notify (\_PR.CPU1, 0x83)
                             }
                             Else
                             {
-                                Notify (\_PR.CPU0, 0x83) // Device-Specific Change
+                                Notify (\_PR.CPU0, 0x83)
                             }
                         }
                     }
@@ -192,7 +194,7 @@ DefinitionBlock ("SSDT9.aml", "SSDT", 2, "LENOVO", "CppcTabl", 0x00001000)
             {
                 If (CondRefOf (\_PR.CPU0._PSS))
                 {
-                    Return (\_PR.CPU0._PSS) /* External reference */
+                    Return (\_PR.CPU0._PSS)
                 }
                 Else
                 {
@@ -237,7 +239,7 @@ DefinitionBlock ("SSDT9.aml", "SSDT", 2, "LENOVO", "CppcTabl", 0x00001000)
             {
                 If (CondRefOf (\_PR.CPU0._TSS))
                 {
-                    Return (\_PR.CPU0._TSS) /* External reference */
+                    Return (\_PR.CPU0._TSS)
                 }
                 Else
                 {

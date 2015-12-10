@@ -1,9 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20140926-64 [Oct 24 2014]
+ * AML/ASL+ Disassembler version 20141107-64 [Dec 17 2014]
  * Copyright (c) 2000 - 2014 Intel Corporation
  * 
- * Disassembly of SSDT7.aml, Mon Nov 16 13:45:48 2015
+ * Disassembling to non-symbolic legacy ASL operators
+ *
+ * Disassembly of SSDT6.aml, Thu Dec 10 22:15:50 2015
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -16,7 +18,7 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20120711 (538052369)
  */
-DefinitionBlock ("SSDT7.aml", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
+DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
 {
 
     External (_PR_.CPU0._PSS, PkgObj)
@@ -87,63 +89,63 @@ DefinitionBlock ("SSDT7.aml", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
 
         Method (CTCU, 0, NotSerialized)
         {
-            Store (PTD2, PPL1) /* \_SB_.PCI0.PPL1 */
-            Store (One, PL1E) /* \_SB_.PCI0.PL1E */
-            Store (One, \CTPC) /* External reference */
+            Store (PTD2, PPL1)
+            Store (One, PL1E)
+            Store (One, \CTPC)
             If (LEqual (Zero, \FTPS))
             {
-                Store (\CTPC, \CTPR) /* External reference */
+                Store (\CTPC, \CTPR)
             }
             Else
             {
                 If (LEqual (\CTPR, \FTPS))
                 {
-                    Store (\CTPC, \CTPR) /* External reference */
-                    Store (\CTPC, \FTPS) /* External reference */
+                    Store (\CTPC, \CTPR)
+                    Store (\CTPC, \FTPS)
                 }
                 Else
                 {
-                    Store (\CTPC, \CTPR) /* External reference */
-                    Store (\CTPC, \FTPS) /* External reference */
+                    Store (\CTPC, \CTPR)
+                    Store (\CTPC, \FTPS)
                     Increment (\FTPS)
                 }
             }
 
             \PNTF (0x80)
-            Subtract (TAR2, One, TAR) /* \_SB_.PCI0.TAR_ */
-            Store (0x02, CTCL) /* \_SB_.PCI0.CTCL */
+            Subtract (TAR2, One, TAR)
+            Store (0x02, CTCL)
         }
 
         Method (CTCN, 0, NotSerialized)
         {
             If (LEqual (CTCL, One))
             {
-                Store (PTDP, PPL1) /* \_SB_.PCI0.PPL1 */
-                Store (One, PL1E) /* \_SB_.PCI0.PL1E */
+                Store (PTDP, PPL1)
+                Store (One, PL1E)
                 NPPC (TARN)
-                Subtract (TARN, One, TAR) /* \_SB_.PCI0.TAR_ */
-                Store (Zero, CTCL) /* \_SB_.PCI0.CTCL */
+                Subtract (TARN, One, TAR)
+                Store (Zero, CTCL)
             }
             Else
             {
                 If (LEqual (CTCL, 0x02))
                 {
-                    Store (Zero, CTCL) /* \_SB_.PCI0.CTCL */
-                    Subtract (TARN, One, TAR) /* \_SB_.PCI0.TAR_ */
+                    Store (Zero, CTCL)
+                    Subtract (TARN, One, TAR)
                     NPPC (TARN)
-                    Store (PTDP, PPL1) /* \_SB_.PCI0.PPL1 */
-                    Store (One, PL1E) /* \_SB_.PCI0.PL1E */
+                    Store (PTDP, PPL1)
+                    Store (One, PL1E)
                 }
             }
         }
 
         Method (CTCD, 0, NotSerialized)
         {
-            Store (One, CTCL) /* \_SB_.PCI0.CTCL */
-            Subtract (TAR1, One, TAR) /* \_SB_.PCI0.TAR_ */
+            Store (One, CTCL)
+            Subtract (TAR1, One, TAR)
             NPPC (TAR1)
-            Store (PTD1, PPL1) /* \_SB_.PCI0.PPL1 */
-            Store (One, PL1E) /* \_SB_.PCI0.PL1E */
+            Store (PTD1, PPL1)
+            Store (One, PL1E)
         }
 
         Method (NPPC, 1, NotSerialized)
@@ -151,32 +153,31 @@ DefinitionBlock ("SSDT7.aml", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
             Name (TRAT, Zero)
             Name (PRAT, Zero)
             Name (TMPI, Zero)
-            Store (Arg0, TRAT) /* \_SB_.PCI0.NPPC.TRAT */
-            Store (SizeOf (\_PR.CPU0._PSS), TMPI) /* \_SB_.PCI0.NPPC.TMPI */
+            Store (Arg0, TRAT)
+            Store (SizeOf (\_PR.CPU0._PSS), TMPI)
             While (LNotEqual (TMPI, Zero))
             {
                 Decrement (TMPI)
-                Store (DerefOf (Index (DerefOf (Index (\_PR.CPU0._PSS, TMPI)), 0x04)), 
-                    PRAT) /* \_SB_.PCI0.NPPC.PRAT */
-                ShiftRight (PRAT, 0x08, PRAT) /* \_SB_.PCI0.NPPC.PRAT */
+                Store (DerefOf (Index (DerefOf (Index (\_PR.CPU0._PSS, TMPI)), 0x04)), PRAT)
+                ShiftRight (PRAT, 0x08, PRAT)
                 If (LGreaterEqual (PRAT, TRAT))
                 {
-                    Store (TMPI, \CTPC) /* External reference */
+                    Store (TMPI, \CTPC)
                     If (LEqual (Zero, \FTPS))
                     {
-                        Store (\CTPC, \CTPR) /* External reference */
+                        Store (\CTPC, \CTPR)
                     }
                     Else
                     {
                         If (LEqual (\CTPR, \FTPS))
                         {
-                            Store (\CTPC, \CTPR) /* External reference */
-                            Store (\CTPC, \FTPS) /* External reference */
+                            Store (\CTPC, \CTPR)
+                            Store (\CTPC, \FTPS)
                         }
                         Else
                         {
-                            Store (\CTPC, \CTPR) /* External reference */
-                            Store (\CTPC, \FTPS) /* External reference */
+                            Store (\CTPC, \CTPR)
+                            Store (\CTPC, \FTPS)
                             Increment (\FTPS)
                         }
                     }
@@ -193,7 +194,7 @@ DefinitionBlock ("SSDT7.aml", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
             And (PNHM, 0x0FFF0FF0, Local0)
             While (One)
             {
-                Store (Local0, _T_0) /* \_SB_.PCI0.CLC2._T_0 */
+                Store (Local0, _T_0)
                 If (LEqual (_T_0, 0x000306C0))
                 {
                     Return (Divide (Multiply (Arg0, 0x05), 0x04, ))

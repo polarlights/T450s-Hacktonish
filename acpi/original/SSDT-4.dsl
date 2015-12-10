@@ -1,9 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20140926-64 [Oct 24 2014]
+ * AML/ASL+ Disassembler version 20141107-64 [Dec 17 2014]
  * Copyright (c) 2000 - 2014 Intel Corporation
  * 
- * Disassembly of SSDT5.aml, Mon Nov 16 13:45:48 2015
+ * Disassembling to non-symbolic legacy ASL operators
+ *
+ * Disassembly of SSDT4.aml, Thu Dec 10 22:15:50 2015
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -16,7 +18,7 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20120711 (538052369)
  */
-DefinitionBlock ("SSDT5.aml", "SSDT", 1, "LENOVO", "Cpu0Ist", 0x00003000)
+DefinitionBlock ("SSDT4.aml", "SSDT", 1, "LENOVO", "Cpu0Ist", 0x00003000)
 {
 
     External (_PR_.CFGD, FieldUnitObj)
@@ -129,7 +131,7 @@ DefinitionBlock ("SSDT5.aml", "SSDT", 1, "LENOVO", "Cpu0Ist", 0x00003000)
                     }
                 }
 
-                Store (Local0, \PPCR) /* External reference */
+                Store (Local0, \PPCR)
                 Return (Local0)
             }
         }
@@ -138,7 +140,7 @@ DefinitionBlock ("SSDT5.aml", "SSDT", 1, "LENOVO", "Cpu0Ist", 0x00003000)
         {
             If (\_PR.CLVL)
             {
-                Store (\_PR.CPPC, \CTPR) /* External reference */
+                Store (\_PR.CPPC, \CTPR)
             }
 
             If (LAnd (And (CFGD, One), And (PDC0, One)))
@@ -336,15 +338,15 @@ DefinitionBlock ("SSDT5.aml", "SSDT", 1, "LENOVO", "Cpu0Ist", 0x00003000)
             {
                 Store (TCNT, Index (DerefOf (Index (HPSD, Zero)), 0x04))
                 Store (TCNT, Index (DerefOf (Index (SPSD, Zero)), 0x04))
-                Store (Ones, PSDF) /* \_PR_.CPU0.PSDF */
+                Store (Ones, PSDF)
             }
 
             If (And (PDC0, 0x0800))
             {
-                Return (HPSD) /* \_PR_.CPU0.HPSD */
+                Return (HPSD)
             }
 
-            Return (SPSD) /* \_PR_.CPU0.SPSD */
+            Return (SPSD)
         }
 
         Name (HPSD, Package (0x01)

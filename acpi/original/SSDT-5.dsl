@@ -1,22 +1,24 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20140926-64 [Oct 24 2014]
+ * AML/ASL+ Disassembler version 20141107-64 [Dec 17 2014]
  * Copyright (c) 2000 - 2014 Intel Corporation
  * 
- * Disassembly of SSDT6.aml, Mon Nov 16 13:45:48 2015
+ * Disassembling to non-symbolic legacy ASL operators
+ *
+ * Disassembly of SSDT5.aml, Thu Dec 10 22:15:50 2015
  *
  * Original Table Header:
  *     Signature        "SSDT"
  *     Length           0x00000B74 (2932)
  *     Revision         0x02
- *     Checksum         0x78
+ *     Checksum         0x3A
  *     OEM ID           "LENOVO"
  *     OEM Table ID     "CpuSsdt"
  *     OEM Revision     0x00003000 (12288)
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20120711 (538052369)
  */
-DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
+DefinitionBlock ("SSDT5.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 {
 
     External (_PR_.CPU0, ProcessorObj)
@@ -34,7 +36,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
         Name (SSDT, Package (0x0C)
         {
             "CPU0IST ", 
-            0x94C3A918, 
+            0x95109918, 
             0x000006C9, 
             "APIST   ", 
             0x9CBCA618, 
@@ -140,7 +142,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
         {
             If (CondRefOf (\_PR.CPU0._PPC))
             {
-                Store (CPPC, \_PR.CPU0._PPC) /* External reference */
+                Store (CPPC, \_PR.CPU0._PPC)
             }
 
             Store (CPDC (Arg0), Local0)
@@ -164,7 +166,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
             CreateField (Arg0, 0x40, Multiply (Local1, 0x08), TEMP)
             Name (STS0, Buffer (0x04)
             {
-                 0x00, 0x00, 0x00, 0x00                           /* .... */
+                 0x00, 0x00, 0x00, 0x00                         
             })
             Concatenate (STS0, TEMP, Local2)
             Return (COSC (ToUUID ("4077a616-290c-47be-9ebd-d87058713953"), REVS, SIZE, Local2))
@@ -183,16 +185,16 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
             CreateDWordField (UID0, 0x04, EID1)
             CreateDWordField (UID0, 0x08, EID2)
             CreateDWordField (UID0, 0x0C, EID3)
-            If (LNot (LAnd (LAnd (LEqual (IID0, EID0), LEqual (IID1, EID1)), 
-                LAnd (LEqual (IID2, EID2), LEqual (IID3, EID3)))))
+            If (LNot (LAnd (LAnd (LEqual (IID0, EID0), LEqual (IID1, EID1)), LAnd (LEqual (
+                IID2, EID2), LEqual (IID3, EID3)))))
             {
-                Store (0x06, STS0) /* \_PR_.CPU0.COSC.STS0 */
+                Store (0x06, STS0)
                 Return (Arg3)
             }
 
             If (LNotEqual (Arg1, One))
             {
-                Store (0x0A, STS0) /* \_PR_.CPU0.COSC.STS0 */
+                Store (0x0A, STS0)
                 Return (Arg3)
             }
 
@@ -210,20 +212,19 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 
             If (And (STS0, One))
             {
-                And (CAP0, 0x0BFF, CAP0) /* \_PR_.CPU0.GCAP.CAP0 */
+                And (CAP0, 0x0BFF, CAP0)
                 Return (Zero)
             }
 
-            Or (And (PDC0, 0x7FFFFFFF), CAP0, PDC0) /* \PDC0 */
+            Or (And (PDC0, 0x7FFFFFFF), CAP0, PDC0)
             If (And (CFGD, 0x7A))
             {
-                If (LAnd (LAnd (And (CFGD, 0x0200), And (PDC0, 0x18
-                    )), LNot (And (SDTL, 0x02))))
+                If (LAnd (LAnd (And (CFGD, 0x0200), And (PDC0, 0x18)), LNot (
+                    And (SDTL, 0x02))))
                 {
-                    Or (SDTL, 0x02, SDTL) /* \SDTL */
-                    OperationRegion (CST0, SystemMemory, DerefOf (Index (SSDT, 0x07)), DerefOf (Index (SSDT, 0x08
-                        )))
-                    Load (CST0, HC0) /* \_PR_.CPU0.HC0_ */
+                    Or (SDTL, 0x02, SDTL)
+                    OperationRegion (CST0, SystemMemory, DerefOf (Index (SSDT, 0x07)), DerefOf (Index (SSDT, 0x08)))
+                    Load (CST0, HC0)
                 }
             }
 
@@ -260,11 +261,11 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 
             If (And (STS1, One))
             {
-                And (CAP1, 0x0BFF, CAP1) /* \_PR_.CPU1.GCAP.CAP1 */
+                And (CAP1, 0x0BFF, CAP1)
                 Return (Zero)
             }
 
-            Or (And (PDC1, 0x7FFFFFFF), CAP1, PDC1) /* \PDC1 */
+            Or (And (PDC1, 0x7FFFFFFF), CAP1, PDC1)
             If (LEqual (And (PDC1, 0x09), 0x09))
             {
                 APPT ()
@@ -275,31 +276,27 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
                 APCT ()
             }
 
-            Store (PDC1, PDC0) /* \PDC0 */
+            Store (PDC1, PDC0)
             Return (Zero)
         }
 
         Method (APCT, 0, NotSerialized)
         {
-            If (LAnd (And (CFGD, 0x7A), LNot (And (SDTL, 0x20
-                ))))
+            If (LAnd (And (CFGD, 0x7A), LNot (And (SDTL, 0x20))))
             {
-                Or (SDTL, 0x20, SDTL) /* \SDTL */
-                OperationRegion (CST1, SystemMemory, DerefOf (Index (SSDT, 0x0A)), DerefOf (Index (SSDT, 0x0B
-                    )))
-                Load (CST1, HC1) /* \_PR_.CPU1.HC1_ */
+                Or (SDTL, 0x20, SDTL)
+                OperationRegion (CST1, SystemMemory, DerefOf (Index (SSDT, 0x0A)), DerefOf (Index (SSDT, 0x0B)))
+                Load (CST1, HC1)
             }
         }
 
         Method (APPT, 0, NotSerialized)
         {
-            If (LAnd (And (CFGD, One), LNot (And (SDTL, 0x10
-                ))))
+            If (LAnd (And (CFGD, One), LNot (And (SDTL, 0x10))))
             {
-                Or (SDTL, 0x10, SDTL) /* \SDTL */
-                OperationRegion (IST1, SystemMemory, DerefOf (Index (SSDT, 0x04)), DerefOf (Index (SSDT, 0x05
-                    )))
-                Load (IST1, HI1) /* \_PR_.CPU1.HI1_ */
+                Or (SDTL, 0x10, SDTL)
+                OperationRegion (IST1, SystemMemory, DerefOf (Index (SSDT, 0x04)), DerefOf (Index (SSDT, 0x05)))
+                Load (IST1, HI1)
             }
         }
     }
@@ -331,11 +328,11 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 
             If (And (STS2, One))
             {
-                And (CAP2, 0x0BFF, CAP2) /* \_PR_.CPU2.GCAP.CAP2 */
+                And (CAP2, 0x0BFF, CAP2)
                 Return (Zero)
             }
 
-            Or (And (PDC2, 0x7FFFFFFF), CAP2, PDC2) /* \PDC2 */
+            Or (And (PDC2, 0x7FFFFFFF), CAP2, PDC2)
             If (LEqual (And (PDC2, 0x09), 0x09))
             {
                 \_PR.CPU1.APPT ()
@@ -346,7 +343,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
                 \_PR.CPU1.APCT ()
             }
 
-            Store (PDC2, PDC0) /* \PDC0 */
+            Store (PDC2, PDC0)
             Return (Zero)
         }
     }
@@ -378,11 +375,11 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 
             If (And (STS3, One))
             {
-                And (CAP3, 0x0BFF, CAP3) /* \_PR_.CPU3.GCAP.CAP3 */
+                And (CAP3, 0x0BFF, CAP3)
                 Return (Zero)
             }
 
-            Or (And (PDC3, 0x7FFFFFFF), CAP3, PDC3) /* \PDC3 */
+            Or (And (PDC3, 0x7FFFFFFF), CAP3, PDC3)
             If (LEqual (And (PDC3, 0x09), 0x09))
             {
                 \_PR.CPU1.APPT ()
@@ -393,7 +390,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
                 \_PR.CPU1.APCT ()
             }
 
-            Store (PDC3, PDC0) /* \PDC0 */
+            Store (PDC3, PDC0)
             Return (Zero)
         }
     }
@@ -425,11 +422,11 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 
             If (And (STS4, One))
             {
-                And (CAP4, 0x0BFF, CAP4) /* \_PR_.CPU4.GCAP.CAP4 */
+                And (CAP4, 0x0BFF, CAP4)
                 Return (Zero)
             }
 
-            Or (And (PDC4, 0x7FFFFFFF), CAP4, PDC4) /* \PDC4 */
+            Or (And (PDC4, 0x7FFFFFFF), CAP4, PDC4)
             If (LEqual (And (PDC4, 0x09), 0x09))
             {
                 \_PR.CPU1.APPT ()
@@ -440,7 +437,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
                 \_PR.CPU1.APCT ()
             }
 
-            Store (PDC4, PDC0) /* \PDC0 */
+            Store (PDC4, PDC0)
             Return (Zero)
         }
     }
@@ -472,11 +469,11 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 
             If (And (STS5, One))
             {
-                And (CAP5, 0x0BFF, CAP5) /* \_PR_.CPU5.GCAP.CAP5 */
+                And (CAP5, 0x0BFF, CAP5)
                 Return (Zero)
             }
 
-            Or (And (PDC5, 0x7FFFFFFF), CAP5, PDC5) /* \PDC5 */
+            Or (And (PDC5, 0x7FFFFFFF), CAP5, PDC5)
             If (LEqual (And (PDC5, 0x09), 0x09))
             {
                 \_PR.CPU1.APPT ()
@@ -487,7 +484,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
                 \_PR.CPU1.APCT ()
             }
 
-            Store (PDC5, PDC0) /* \PDC0 */
+            Store (PDC5, PDC0)
             Return (Zero)
         }
     }
@@ -519,11 +516,11 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 
             If (And (STS6, One))
             {
-                And (CAP6, 0x0BFF, CAP6) /* \_PR_.CPU6.GCAP.CAP6 */
+                And (CAP6, 0x0BFF, CAP6)
                 Return (Zero)
             }
 
-            Or (And (PDC6, 0x7FFFFFFF), CAP6, PDC6) /* \PDC6 */
+            Or (And (PDC6, 0x7FFFFFFF), CAP6, PDC6)
             If (LEqual (And (PDC6, 0x09), 0x09))
             {
                 \_PR.CPU1.APPT ()
@@ -534,7 +531,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
                 \_PR.CPU1.APCT ()
             }
 
-            Store (PDC6, PDC0) /* \PDC0 */
+            Store (PDC6, PDC0)
             Return (Zero)
         }
     }
@@ -566,11 +563,11 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
 
             If (And (STS7, One))
             {
-                And (CAP7, 0x0BFF, CAP7) /* \_PR_.CPU7.GCAP.CAP7 */
+                And (CAP7, 0x0BFF, CAP7)
                 Return (Zero)
             }
 
-            Or (And (PDC7, 0x7FFFFFFF), CAP7, PDC7) /* \PDC7 */
+            Or (And (PDC7, 0x7FFFFFFF), CAP7, PDC7)
             If (LEqual (And (PDC7, 0x09), 0x09))
             {
                 \_PR.CPU1.APPT ()
@@ -581,7 +578,7 @@ DefinitionBlock ("SSDT6.aml", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
                 \_PR.CPU1.APCT ()
             }
 
-            Store (PDC7, PDC0) /* \PDC0 */
+            Store (PDC7, PDC0)
             Return (Zero)
         }
     }

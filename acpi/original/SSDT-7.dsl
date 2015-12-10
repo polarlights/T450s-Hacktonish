@@ -1,9 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20140926-64 [Oct 24 2014]
+ * AML/ASL+ Disassembler version 20141107-64 [Dec 17 2014]
  * Copyright (c) 2000 - 2014 Intel Corporation
  * 
- * Disassembly of SSDT8.aml, Mon Nov 16 13:45:48 2015
+ * Disassembling to non-symbolic legacy ASL operators
+ *
+ * Disassembly of SSDT7.aml, Thu Dec 10 22:15:50 2015
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -16,7 +18,7 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20120711 (538052369)
  */
-DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
+DefinitionBlock ("SSDT7.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
 {
     /*
      * iASL Warning: There were 2 external control methods found during
@@ -172,13 +174,13 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
 
         Method (_INI, 0, NotSerialized)  // _INI: Initialize
         {
-            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), 
-                LNotEqual (And (ABAR, 0xFFFFC000), Zero)))
+            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), LNotEqual (And (
+                ABAR, 0xFFFFC000), Zero)))
             {
-                Store (ABAR, BARA) /* \_SB_.PCI0.B0D3.BARA */
+                Store (ABAR, BARA)
                 If (LNotEqual (ABAH, Zero))
                 {
-                    Or (BARA, ShiftLeft (ABAH, 0x20), BARA) /* \_SB_.PCI0.B0D3.BARA */
+                    Or (BARA, ShiftLeft (ABAH, 0x20), BARA)
                 }
             }
         }
@@ -201,17 +203,17 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
 
         Method (ASTR, 0, NotSerialized)
         {
-            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), 
-                LNotEqual (And (ABAR, 0xFFFFC000), Zero)))
+            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), LNotEqual (And (
+                ABAR, 0xFFFFC000), Zero)))
             {
-                Store (Zero, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
-                And (ABAR, 0xFFFFFFF0, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                Store (Zero, BBAR)
+                And (ABAR, 0xFFFFFFF0, BBAR)
                 If (LNotEqual (ABAH, Zero))
                 {
-                    Or (BBAR, ShiftLeft (ABAH, 0x20), BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                    Or (BBAR, ShiftLeft (ABAH, 0x20), BBAR)
                 }
 
-                Add (BBAR, 0x1000, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                Add (BBAR, 0x1000, BBAR)
                 OperationRegion (RPCY, SystemMemory, BBAR, 0x25)
                 Field (RPCY, DWordAcc, NoLock, Preserve)
                 {
@@ -222,8 +224,8 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                     ADWA,   32
                 }
 
-                Store (AUDA, EMWA) /* \_SB_.PCI0.B0D3.ASTR.EMWA */
-                Store (AUD3, EM4W) /* \_SB_.PCI0.B0D3.ASTR.EM4W */
+                Store (AUDA, EMWA)
+                Store (AUD3, EM4W)
             }
         }
 
@@ -231,23 +233,23 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
         {
             Name (CONT, 0x03E8)
             Name (ADDR, 0x80000000)
-            Store (Arg0, ADDR) /* \_SB_.PCI0.B0D3.VSTR.ADDR */
+            Store (Arg0, ADDR)
             OperationRegion (CCDC, SystemMemory, ADDR, 0x04)
             Field (CCDC, ByteAcc, NoLock, Preserve)
             {
                 CDEC,   32
             }
 
-            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), 
-                LNotEqual (And (ABAR, 0xFFFFC000), Zero)))
+            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), LNotEqual (And (
+                ABAR, 0xFFFFC000), Zero)))
             {
                 If (LNotEqual (CDEC, Zero))
                 {
-                    Store (Zero, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
-                    And (ABAR, 0xFFFFFFF0, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                    Store (Zero, BBAR)
+                    And (ABAR, 0xFFFFFFF0, BBAR)
                     If (LNotEqual (ABAH, Zero))
                     {
-                        Or (BBAR, ShiftLeft (ABAH, 0x20), BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                        Or (BBAR, ShiftLeft (ABAH, 0x20), BBAR)
                     }
 
                     OperationRegion (IPCV, SystemMemory, BBAR, 0x70)
@@ -259,20 +261,18 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                         AIRS,   16
                     }
 
-                    Store (0x03E8, CONT) /* \_SB_.PCI0.B0D3.VSTR.CONT */
-                    While (LAnd (LEqual (And (AIRS, One), One), LNotEqual (
-                        CONT, Zero)))
+                    Store (0x03E8, CONT)
+                    While (LAnd (LEqual (And (AIRS, One), One), LNotEqual (CONT, Zero)))
                     {
                         Stall (One)
                         Decrement (CONT)
                     }
 
-                    Or (AIRS, 0x02, AIRS) /* \_SB_.PCI0.B0D3.VSTR.AIRS */
-                    Store (CDEC, AVIC) /* \_SB_.PCI0.B0D3.VSTR.AVIC */
-                    Or (AIRS, One, AIRS) /* \_SB_.PCI0.B0D3.VSTR.AIRS */
-                    Store (0x03E8, CONT) /* \_SB_.PCI0.B0D3.VSTR.CONT */
-                    While (LAnd (LEqual (And (AIRS, One), One), LNotEqual (
-                        CONT, Zero)))
+                    Or (AIRS, 0x02, AIRS)
+                    Store (CDEC, AVIC)
+                    Or (AIRS, One, AIRS)
+                    Store (0x03E8, CONT)
+                    While (LAnd (LEqual (And (AIRS, One), One), LNotEqual (CONT, Zero)))
                     {
                         Stall (One)
                         Decrement (CONT)
@@ -286,21 +286,21 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
             Name (IDDX, 0x80000000)
             If (LAnd (LNotEqual (CADR, Zero), LNotEqual (CCNT, Zero)))
             {
-                Store (CADR, IDDX) /* \_SB_.PCI0.B0D3.CXDC.IDDX */
+                Store (CADR, IDDX)
                 While (LLess (IDDX, Add (CADR, Multiply (CCNT, 0x04))))
                 {
                     VSTR (IDDX)
-                    Add (IDDX, 0x04, IDDX) /* \_SB_.PCI0.B0D3.CXDC.IDDX */
+                    Add (IDDX, 0x04, IDDX)
                 }
             }
         }
 
         Method (ARST, 0, NotSerialized)
         {
-            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), 
-                LNotEqual (And (ABAR, 0xFFFFC000), Zero)))
+            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), LNotEqual (And (
+                ABAR, 0xFFFFC000), Zero)))
             {
-                And (ABAR, 0xFFFFFFF0, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                And (ABAR, 0xFFFFFFF0, BBAR)
                 OperationRegion (IPCV, SystemMemory, BBAR, 0xBF)
                 Field (IPCV, AnyAcc, NoLock, Preserve)
                 {
@@ -316,25 +316,25 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                     OSD2,   32
                 }
 
-                And (CORB, 0xFFFFFFFD, CORB) /* \_SB_.PCI0.B0D3.ARST.CORB */
-                And (RIRB, 0xFFFFFFFD, RIRB) /* \_SB_.PCI0.B0D3.ARST.RIRB */
-                And (OSD1, 0xFFFFFFFD, OSD1) /* \_SB_.PCI0.B0D3.ARST.OSD1 */
-                And (OSD2, 0xFFFFFFFD, OSD2) /* \_SB_.PCI0.B0D3.ARST.OSD2 */
-                And (CRST, 0xFFFFFFFE, CRST) /* \_SB_.PCI0.B0D3.ARST.CRST */
+                And (CORB, 0xFFFFFFFD, CORB)
+                And (RIRB, 0xFFFFFFFD, RIRB)
+                And (OSD1, 0xFFFFFFFD, OSD1)
+                And (OSD2, 0xFFFFFFFD, OSD2)
+                And (CRST, 0xFFFFFFFE, CRST)
             }
         }
 
         Method (AINI, 0, NotSerialized)
         {
             Name (CONT, 0x03E8)
-            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), 
-                LNotEqual (And (ABAR, 0xFFFFC000), Zero)))
+            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), LNotEqual (And (
+                ABAR, 0xFFFFC000), Zero)))
             {
-                Store (Zero, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
-                And (ABAR, 0xFFFFFFF0, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                Store (Zero, BBAR)
+                And (ABAR, 0xFFFFFFF0, BBAR)
                 If (LNotEqual (ABAH, Zero))
                 {
-                    Or (BBAR, ShiftLeft (ABAH, 0x20), BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                    Or (BBAR, ShiftLeft (ABAH, 0x20), BBAR)
                 }
 
                 OperationRegion (IPCV, SystemMemory, BBAR, 0x70)
@@ -351,30 +351,27 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                     AIRS,   16
                 }
 
-                Or (GCTL, One, GCTL) /* \_SB_.PCI0.B0D3.AINI.GCTL */
-                Store (0x03E8, CONT) /* \_SB_.PCI0.B0D3.AINI.CONT */
-                While (LAnd (LEqual (And (GCTL, One), Zero), LNotEqual (
-                    CONT, Zero)))
+                Or (GCTL, One, GCTL)
+                Store (0x03E8, CONT)
+                While (LAnd (LEqual (And (GCTL, One), Zero), LNotEqual (CONT, Zero)))
                 {
                     Stall (One)
                     Decrement (CONT)
                 }
 
-                And (GCAP, 0xFFFF, GCAP) /* \_SB_.PCI0.B0D3.AINI.GCAP */
-                Or (SSTS, 0x0F, SSTS) /* \_SB_.PCI0.B0D3.AINI.SSTS */
-                And (GCTL, 0xFFFFFFFE, GCTL) /* \_SB_.PCI0.B0D3.AINI.GCTL */
-                Store (0x03E8, CONT) /* \_SB_.PCI0.B0D3.AINI.CONT */
-                While (LAnd (LEqual (And (GCTL, One), One), LNotEqual (
-                    CONT, Zero)))
+                And (GCAP, 0xFFFF, GCAP)
+                Or (SSTS, 0x0F, SSTS)
+                And (GCTL, 0xFFFFFFFE, GCTL)
+                Store (0x03E8, CONT)
+                While (LAnd (LEqual (And (GCTL, One), One), LNotEqual (CONT, Zero)))
                 {
                     Stall (One)
                     Decrement (CONT)
                 }
 
-                Or (GCTL, One, GCTL) /* \_SB_.PCI0.B0D3.AINI.GCTL */
-                Store (0x03E8, CONT) /* \_SB_.PCI0.B0D3.AINI.CONT */
-                While (LAnd (LEqual (And (GCTL, One), Zero), LNotEqual (
-                    CONT, Zero)))
+                Or (GCTL, One, GCTL)
+                Store (0x03E8, CONT)
+                While (LAnd (LEqual (And (GCTL, One), Zero), LNotEqual (CONT, Zero)))
                 {
                     Stall (One)
                     Decrement (CONT)
@@ -386,27 +383,27 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
         {
             If (Arg0)
             {
-                If (LOr (LEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), LEqual (And (
-                    ABAR, 0xFFFFC000), Zero)))
+                If (LOr (LEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), LEqual (And (ABAR, 0xFFFFC000
+                    ), Zero)))
                 {
                     If (LNotEqual (BARA, 0x80000000))
                     {
-                        Store (ABAR, TBAR) /* \_SB_.PCI0.B0D3.TBAR */
-                        Or (TBAR, ShiftLeft (ABAH, 0x20), TBAR) /* \_SB_.PCI0.B0D3.TBAR */
-                        Store (ACMD, TCMD) /* \_SB_.PCI0.B0D3.TCMD */
-                        Store (ShiftRight (BARA, 0x20), ABAH) /* \_SB_.PCI0.B0D3.ABAH */
-                        Store (BARA, ABAR) /* \_SB_.PCI0.B0D3.ABAR */
-                        Store (0x06, ACMD) /* \_SB_.PCI0.B0D3.ACMD */
-                        Store (One, MODB) /* \_SB_.PCI0.B0D3.MODB */
+                        Store (ABAR, TBAR)
+                        Or (TBAR, ShiftLeft (ABAH, 0x20), TBAR)
+                        Store (ACMD, TCMD)
+                        Store (ShiftRight (BARA, 0x20), ABAH)
+                        Store (BARA, ABAR)
+                        Store (0x06, ACMD)
+                        Store (One, MODB)
                     }
                 }
                 Else
                 {
                     If (LNotEqual (And (ACMD, 0x06), 0x06))
                     {
-                        Store (ACMD, TCMD) /* \_SB_.PCI0.B0D3.TCMD */
-                        Store (0x06, ACMD) /* \_SB_.PCI0.B0D3.ACMD */
-                        Store (One, MODC) /* \_SB_.PCI0.B0D3.MODC */
+                        Store (ACMD, TCMD)
+                        Store (0x06, ACMD)
+                        Store (One, MODC)
                     }
                 }
             }
@@ -416,25 +413,25 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                 {
                     If (LEqual (ABAR, BARA))
                     {
-                        Store (TBAR, ABAR) /* \_SB_.PCI0.B0D3.ABAR */
-                        Store (ShiftRight (TBAR, 0x20), ABAH) /* \_SB_.PCI0.B0D3.ABAH */
-                        Store (TCMD, ACMD) /* \_SB_.PCI0.B0D3.ACMD */
+                        Store (TBAR, ABAR)
+                        Store (ShiftRight (TBAR, 0x20), ABAH)
+                        Store (TCMD, ACMD)
                     }
                 }
 
                 If (MODC)
                 {
-                    Store (TCMD, ACMD) /* \_SB_.PCI0.B0D3.ACMD */
+                    Store (TCMD, ACMD)
                 }
             }
         }
 
         Method (DCCC, 1, NotSerialized)
         {
-            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), 
-                LNotEqual (And (ABAR, 0xFFFFC000), Zero)))
+            If (LAnd (LNotEqual (And (ABAR, 0xFFFFC004), 0xFFFFC004), LNotEqual (And (
+                ABAR, 0xFFFFC000), Zero)))
             {
-                And (ABAR, 0xFFFFFFF0, BBAR) /* \_SB_.PCI0.B0D3.BBAR */
+                And (ABAR, 0xFFFFFFF0, BBAR)
                 OperationRegion (IPCV, SystemMemory, BBAR, 0x1020)
                 Field (IPCV, AnyAcc, NoLock, Preserve)
                 {
@@ -445,34 +442,34 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
 
                 If (LEqual (Arg0, Zero))
                 {
-                    And (AEM4, 0xFFFC0000, AEM4) /* \_SB_.PCI0.B0D3.DCCC.AEM4 */
-                    Or (AEM4, 0x04, AEM4) /* \_SB_.PCI0.B0D3.DCCC.AEM4 */
-                    And (AEM5, 0xFFFC0000, AEM5) /* \_SB_.PCI0.B0D3.DCCC.AEM5 */
-                    Or (AEM5, 0x4B, AEM5) /* \_SB_.PCI0.B0D3.DCCC.AEM5 */
+                    And (AEM4, 0xFFFC0000, AEM4)
+                    Or (AEM4, 0x04, AEM4)
+                    And (AEM5, 0xFFFC0000, AEM5)
+                    Or (AEM5, 0x4B, AEM5)
                 }
 
                 If (LEqual (Arg0, One))
                 {
-                    And (AEM4, 0xFFFC0000, AEM4) /* \_SB_.PCI0.B0D3.DCCC.AEM4 */
-                    Or (AEM4, 0x04, AEM4) /* \_SB_.PCI0.B0D3.DCCC.AEM4 */
-                    And (AEM5, 0xFFFC0000, AEM5) /* \_SB_.PCI0.B0D3.DCCC.AEM5 */
-                    Or (AEM5, 0x5A, AEM5) /* \_SB_.PCI0.B0D3.DCCC.AEM5 */
+                    And (AEM4, 0xFFFC0000, AEM4)
+                    Or (AEM4, 0x04, AEM4)
+                    And (AEM5, 0xFFFC0000, AEM5)
+                    Or (AEM5, 0x5A, AEM5)
                 }
 
                 If (LEqual (Arg0, 0x02))
                 {
-                    And (AEM4, 0xFFFC0000, AEM4) /* \_SB_.PCI0.B0D3.DCCC.AEM4 */
-                    Or (AEM4, 0x10, AEM4) /* \_SB_.PCI0.B0D3.DCCC.AEM4 */
-                    And (AEM5, 0xFFFC0000, AEM5) /* \_SB_.PCI0.B0D3.DCCC.AEM5 */
-                    Or (AEM5, 0xE1, AEM5) /* \_SB_.PCI0.B0D3.DCCC.AEM5 */
+                    And (AEM4, 0xFFFC0000, AEM4)
+                    Or (AEM4, 0x10, AEM4)
+                    And (AEM5, 0xFFFC0000, AEM5)
+                    Or (AEM5, 0xE1, AEM5)
                 }
 
                 If (LEqual (Arg0, 0x03))
                 {
-                    And (AEM4, 0xFFFC0000, AEM4) /* \_SB_.PCI0.B0D3.DCCC.AEM4 */
-                    Or (AEM4, 0x08, AEM4) /* \_SB_.PCI0.B0D3.DCCC.AEM4 */
-                    And (AEM5, 0xFFFC0000, AEM5) /* \_SB_.PCI0.B0D3.DCCC.AEM5 */
-                    Or (AEM5, 0xE1, AEM5) /* \_SB_.PCI0.B0D3.DCCC.AEM5 */
+                    And (AEM4, 0xFFFC0000, AEM4)
+                    Or (AEM4, 0x08, AEM4)
+                    And (AEM5, 0xFFFC0000, AEM5)
+                    Or (AEM5, 0xE1, AEM5)
                 }
             }
         }
@@ -692,18 +689,18 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
         {
             If (LEqual (GEFC, 0x04))
             {
-                Store (GBDA (), GXFC) /* \_SB_.PCI0.VID_.GXFC */
+                Store (GBDA (), GXFC)
             }
 
             If (LEqual (GEFC, 0x06))
             {
-                Store (SBCB (), GXFC) /* \_SB_.PCI0.VID_.GXFC */
+                Store (SBCB (), GXFC)
             }
 
-            Store (Zero, GEFC) /* \_SB_.PCI0.VID_.GEFC */
-            Store (One, \_SB.PCI0.LPC.SCIS) /* External reference */
-            Store (Zero, GSSE) /* \_SB_.PCI0.VID_.GSSE */
-            Store (Zero, SCIE) /* \_SB_.PCI0.VID_.SCIE */
+            Store (Zero, GEFC)
+            Store (One, \_SB.PCI0.LPC.SCIS)
+            Store (Zero, GSSE)
+            Store (Zero, SCIE)
             Return (Zero)
         }
 
@@ -711,121 +708,120 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
         {
             If (LEqual (GESF, Zero))
             {
-                Store (0x0241, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (0x0241, PARM)
+                Store (Zero, GESF)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, One))
             {
-                Store (0x00200382, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (0x00200382, PARM)
+                Store (Zero, GESF)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x04))
             {
-                And (PARM, 0xEFFF0000, PARM) /* \_SB_.PCI0.VID_.PARM */
-                And (PARM, ShiftLeft (DerefOf (Index (DBTB, IBTT)), 0x10), 
-                    PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (IBTT, PARM, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                And (PARM, 0xEFFF0000, PARM)
+                And (PARM, ShiftLeft (DerefOf (Index (DBTB, IBTT)), 0x10), PARM)
+                Or (IBTT, PARM, PARM)
+                Store (Zero, GESF)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x05))
             {
                 If (\_SB.LID._LID ())
                 {
-                    Store (One, LIDS) /* External reference */
+                    Store (One, LIDS)
                 }
                 Else
                 {
-                    Store (Zero, LIDS) /* External reference */
+                    Store (Zero, LIDS)
                 }
 
-                Store (IPSC, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (PARM, ShiftLeft (IPAT, 0x08), PARM) /* \_SB_.PCI0.VID_.PARM */
-                Add (PARM, 0x0100, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (PARM, ShiftLeft (LIDS, 0x10), PARM) /* \_SB_.PCI0.VID_.PARM */
-                Add (PARM, 0x00010000, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (PARM, ShiftLeft (IBIA, 0x14), PARM) /* \_SB_.PCI0.VID_.PARM */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (IPSC, PARM)
+                Or (PARM, ShiftLeft (IPAT, 0x08), PARM)
+                Add (PARM, 0x0100, PARM)
+                Or (PARM, ShiftLeft (LIDS, 0x10), PARM)
+                Add (PARM, 0x00010000, PARM)
+                Or (PARM, ShiftLeft (IBIA, 0x14), PARM)
+                Store (Zero, GESF)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x07))
             {
-                Store (GIVD, PARM) /* \_SB_.PCI0.VID_.PARM */
-                XOr (PARM, One, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (PARM, ShiftLeft (GMFN, One), PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (PARM, 0x1800, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (PARM, 0x00060000, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (PARM, ShiftLeft (IDMS, 0x11), PARM) /* \_SB_.PCI0.VID_.PARM */
-                Or (ShiftLeft (DerefOf (Index (DerefOf (Index (CDCT, HVCO)), CDVL
-                    )), 0x15), PARM, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Store (One, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (GIVD, PARM)
+                XOr (PARM, One, PARM)
+                Or (PARM, ShiftLeft (GMFN, One), PARM)
+                Or (PARM, 0x1800, PARM)
+                Or (PARM, 0x00060000, PARM)
+                Or (PARM, ShiftLeft (IDMS, 0x11), PARM)
+                Or (ShiftLeft (DerefOf (Index (DerefOf (Index (CDCT, HVCO)), CDVL)), 0x15
+                    ), PARM, PARM)
+                Store (One, GESF)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x0A))
             {
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
+                Store (Zero, PARM)
                 If (ISSC)
                 {
-                    Or (PARM, 0x03, PARM) /* \_SB_.PCI0.VID_.PARM */
+                    Or (PARM, 0x03, PARM)
                 }
 
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x0B))
             {
-                Store (KSV0, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Store (KSV1, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (KSV0, PARM)
+                Store (KSV1, GESF)
+                Return (SUCC)
             }
 
-            Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-            Return (CRIT) /* \_SB_.PCI0.VID_.CRIT */
+            Store (Zero, GESF)
+            Return (CRIT)
         }
 
         Method (SBCB, 0, Serialized)
         {
             If (LEqual (GESF, Zero))
             {
-                Store (0x00220382, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (0x00220382, PARM)
+                Store (Zero, GESF)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, One))
             {
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x03))
             {
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x04))
             {
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x05))
             {
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x07))
@@ -843,14 +839,14 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                     Store (CLID, Local0)
                     If (And (0x80000000, Local0))
                     {
-                        And (CLID, 0x0F, CLID) /* \_SB_.PCI0.VID_.CLID */
+                        And (CLID, 0x0F, CLID)
                         GLID (CLID)
                     }
                 }
 
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x08))
@@ -864,64 +860,64 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                     }
                 }
 
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x09))
             {
-                And (PARM, 0xFF, IBTT) /* \IBTT */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                And (PARM, 0xFF, IBTT)
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x0A))
             {
-                And (PARM, 0xFF, IPSC) /* \IPSC */
+                And (PARM, 0xFF, IPSC)
                 If (And (ShiftRight (PARM, 0x08), 0xFF))
                 {
-                    And (ShiftRight (PARM, 0x08), 0xFF, IPAT) /* \IPAT */
+                    And (ShiftRight (PARM, 0x08), 0xFF, IPAT)
                     Decrement (IPAT)
                 }
 
-                And (ShiftRight (PARM, 0x14), 0x07, IBIA) /* \IBIA */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                And (ShiftRight (PARM, 0x14), 0x07, IBIA)
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x0B))
             {
-                And (ShiftRight (PARM, One), One, IF1E) /* \IF1E */
+                And (ShiftRight (PARM, One), One, IF1E)
                 If (And (PARM, 0x0001E000))
                 {
-                    And (ShiftRight (PARM, 0x0D), 0x0F, IDMS) /* \IDMS */
+                    And (ShiftRight (PARM, 0x0D), 0x0F, IDMS)
                 }
                 Else
                 {
-                    And (ShiftRight (PARM, 0x11), 0x0F, IDMS) /* \IDMS */
+                    And (ShiftRight (PARM, 0x11), 0x0F, IDMS)
                 }
 
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x10))
             {
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x11))
             {
-                Store (ShiftLeft (LIDS, 0x08), PARM) /* \_SB_.PCI0.VID_.PARM */
-                Add (PARM, 0x0100, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (ShiftLeft (LIDS, 0x08), PARM)
+                Add (PARM, 0x0100, PARM)
+                Store (Zero, GESF)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x12))
@@ -930,37 +926,37 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                 {
                     If (LEqual (ShiftRight (PARM, One), One))
                     {
-                        Store (One, ISSC) /* \ISSC */
+                        Store (One, ISSC)
                     }
                     Else
                     {
-                        Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                        Return (CRIT) /* \_SB_.PCI0.VID_.CRIT */
+                        Store (Zero, GESF)
+                        Return (CRIT)
                     }
                 }
                 Else
                 {
-                    Store (Zero, ISSC) /* \ISSC */
+                    Store (Zero, ISSC)
                 }
 
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x13))
             {
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x14))
             {
-                And (PARM, 0x0F, PAVP) /* \PAVP */
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                And (PARM, 0x0F, PAVP)
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x15))
@@ -974,30 +970,30 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                     \_SB.PCI0.B0D3.AINI ()
                     \_SB.PCI0.B0D3.CXDC ()
                     \_SB.PCI0.B0D3.ABWA (Zero)
-                    Notify (\_SB.PCI0, Zero) // Bus Check
+                    Notify (\_SB.PCI0, Zero)
                 }
 
                 If (LEqual (PARM, Zero))
                 {
                     And (\_SB.PCI0.AUDE, 0xDF, \_SB.PCI0.AUDE)
-                    Notify (\_SB.PCI0, Zero) // Bus Check
+                    Notify (\_SB.PCI0, Zero)
                 }
 
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Store (Zero, PARM) /* \_SB_.PCI0.VID_.PARM */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Store (Zero, PARM)
+                Return (SUCC)
             }
 
             If (LEqual (GESF, 0x16))
             {
                 And (PARM, 0x03, Local0)
                 \_SB.PCI0.B0D3.DCCC (Local0)
-                Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-                Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+                Store (Zero, GESF)
+                Return (SUCC)
             }
 
-            Store (Zero, GESF) /* \_SB_.PCI0.VID_.GESF */
-            Return (SUCC) /* \_SB_.PCI0.VID_.SUCC */
+            Store (Zero, GESF)
+            Return (SUCC)
         }
 
         Method (PDRD, 0, NotSerialized)
@@ -1027,8 +1023,8 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                 Return (One)
             }
 
-            Store (Arg0, CEVT) /* \_SB_.PCI0.VID_.CEVT */
-            Store (0x03, CSTS) /* \_SB_.PCI0.VID_.CSTS */
+            Store (Arg0, CEVT)
+            Store (0x03, CSTS)
             If (LAnd (LEqual (CHPD, Zero), LEqual (Arg1, Zero)))
             {
                 If (LNotEqual (Arg0, One))
@@ -1044,37 +1040,37 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                 }
             }
 
-            Notify (\_SB.PCI0.VID, 0x80) // Status Change
+            Notify (\_SB.PCI0.VID, 0x80)
             Return (Zero)
         }
 
         Method (GHDS, 1, NotSerialized)
         {
-            Store (Arg0, TIDX) /* \_SB_.PCI0.VID_.TIDX */
+            Store (Arg0, TIDX)
             Return (GNOT (One, Zero))
         }
 
         Method (GLID, 1, NotSerialized)
         {
-            Store (Arg0, CLID) /* \_SB_.PCI0.VID_.CLID */
+            Store (Arg0, CLID)
             Return (GNOT (0x02, Zero))
         }
 
         Method (GLIS, 1, NotSerialized)
         {
-            Store (Arg0, CLID) /* \_SB_.PCI0.VID_.CLID */
+            Store (Arg0, CLID)
             Return (Zero)
         }
 
         Method (GDCK, 1, NotSerialized)
         {
-            Store (Arg0, CDCK) /* \_SB_.PCI0.VID_.CDCK */
+            Store (Arg0, CDCK)
             Return (GNOT (0x04, 0x80))
         }
 
         Method (GDCS, 1, NotSerialized)
         {
-            Store (Arg0, CDCK) /* \_SB_.PCI0.VID_.CDCK */
+            Store (Arg0, CDCK)
         }
 
         Method (PARD, 0, NotSerialized)
@@ -1101,32 +1097,32 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
 
             If (LEqual (Arg0, 0x02))
             {
-                XOr (PFIT, 0x07, PFIT) /* \_SB_.PCI0.VID_.PFIT */
-                Or (PFIT, 0x80000000, PFIT) /* \_SB_.PCI0.VID_.PFIT */
-                Store (0x04, ASLC) /* \_SB_.PCI0.VID_.ASLC */
+                XOr (PFIT, 0x07, PFIT)
+                Or (PFIT, 0x80000000, PFIT)
+                Store (0x04, ASLC)
             }
             Else
             {
                 If (LEqual (Arg0, One))
                 {
-                    Store (Arg1, BCLP) /* \_SB_.PCI0.VID_.BCLP */
-                    Or (BCLP, 0x80000000, BCLP) /* \_SB_.PCI0.VID_.BCLP */
-                    Store (0x0A, ASLC) /* \_SB_.PCI0.VID_.ASLC */
+                    Store (Arg1, BCLP)
+                    Or (BCLP, 0x80000000, BCLP)
+                    Store (0x0A, ASLC)
                 }
                 Else
                 {
                     If (LEqual (Arg0, 0x03))
                     {
-                        Store (Arg1, PFMB) /* \_SB_.PCI0.VID_.PFMB */
-                        Or (PFMB, 0x80000100, PFMB) /* \_SB_.PCI0.VID_.PFMB */
-                        Store (0x08, ASLC) /* \_SB_.PCI0.VID_.ASLC */
+                        Store (Arg1, PFMB)
+                        Or (PFMB, 0x80000100, PFMB)
+                        Store (0x08, ASLC)
                     }
                     Else
                     {
                         If (LEqual (Arg0, Zero))
                         {
-                            Store (Arg1, ALSI) /* \_SB_.PCI0.VID_.ALSI */
-                            Store (One, ASLC) /* \_SB_.PCI0.VID_.ASLC */
+                            Store (Arg1, ALSI)
+                            Store (One, ASLC)
                         }
                         Else
                         {
@@ -1136,7 +1132,7 @@ DefinitionBlock ("SSDT8.aml", "SSDT", 1, "LENOVO", "SaSsdt ", 0x00003000)
                 }
             }
 
-            Store (One, ASLE) /* \_SB_.PCI0.VID_.ASLE */
+            Store (One, ASLE)
             Return (Zero)
         }
     }

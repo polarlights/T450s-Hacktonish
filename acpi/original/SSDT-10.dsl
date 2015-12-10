@@ -1,9 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20140926-64 [Oct 24 2014]
+ * AML/ASL+ Disassembler version 20141107-64 [Dec 17 2014]
  * Copyright (c) 2000 - 2014 Intel Corporation
  * 
- * Disassembly of SSDT11.aml, Mon Nov 16 13:45:48 2015
+ * Disassembling to non-symbolic legacy ASL operators
+ *
+ * Disassembly of SSDT10.aml, Thu Dec 10 22:15:49 2015
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -16,7 +18,7 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20120711 (538052369)
  */
-DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
+DefinitionBlock ("SSDT10.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
 {
 
     External (_SB_.PCI0.LPC_, DeviceObj)
@@ -26,7 +28,7 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
     {
         Name (TCGP, Buffer (0x08)
         {
-             0x00, 0xE0, 0x1F, 0x01, 0x02, 0x04, 0x08, 0xF0   /* ........ */
+             0x00, 0xE0, 0x1F, 0x01, 0x02, 0x04, 0x08, 0xF0 
         })
         CreateByteField (TCGP, Zero, PPRQ)
         CreateByteField (TCGP, One, PPL1)
@@ -156,7 +158,7 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
             })
             Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
             {
-                Return (BUF1) /* \_SB_.PCI0.LPC_.TPM_.BUF1 */
+                Return (BUF1)
             }
 
             Method (UCMP, 2, NotSerialized)
@@ -174,8 +176,8 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                 Store (Zero, Local0)
                 While (LLess (Local0, 0x10))
                 {
-                    If (LNotEqual (DerefOf (Index (Arg0, Local0)), DerefOf (Index (
-                        Arg1, Local0))))
+                    If (LNotEqual (DerefOf (Index (Arg0, Local0)), DerefOf (Index (Arg1, Local0
+                        ))))
                     {
                         Return (Zero)
                     }
@@ -190,7 +192,7 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
             {
                 Name (TTMP, Buffer (One)
                 {
-                     0x00                                             /* . */
+                     0x00                                           
                 })
                 CreateByteField (TTMP, Zero, TMPV)
                 If (LEqual (UCMP (Arg0, ToUUID ("3dddfaa6-361b-4eb4-a424-8d10089d1653") /* Physical Presence Interface */), One))
@@ -199,7 +201,7 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                     {
                         Return (Buffer (0x02)
                         {
-                             0xFF, 0x01                                       /* .. */
+                             0xFF, 0x01                                     
                         })
                     }
 
@@ -215,27 +217,27 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                     {
                         If (LLessEqual (DerefOf (Index (Arg3, Zero)), 0x0B))
                         {
-                            Store (DerefOf (Index (Arg3, Zero)), PPRQ) /* \_SB_.PPRQ */
-                            Store (PPRQ, SMID) /* \_SB_.SMID */
-                            Store (0xC1, SMIT) /* \_SB_.SMIT */
+                            Store (DerefOf (Index (Arg3, Zero)), PPRQ)
+                            Store (PPRQ, SMID)
+                            Store (0xC1, SMIT)
                             Return (Zero)
                         }
 
-                        If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x0E), 
-                            LLessEqual (DerefOf (Index (Arg3, Zero)), 0x12)))
+                        If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x0E), LLessEqual (
+                            DerefOf (Index (Arg3, Zero)), 0x12)))
                         {
-                            Store (DerefOf (Index (Arg3, Zero)), PPRQ) /* \_SB_.PPRQ */
-                            Store (PPRQ, SMID) /* \_SB_.SMID */
-                            Store (0xC1, SMIT) /* \_SB_.SMIT */
+                            Store (DerefOf (Index (Arg3, Zero)), PPRQ)
+                            Store (PPRQ, SMID)
+                            Store (0xC1, SMIT)
                             Return (Zero)
                         }
 
-                        If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (
-                            DerefOf (Index (Arg3, Zero)), 0x16)))
+                        If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (DerefOf (Index (
+                            Arg3, Zero)), 0x16)))
                         {
-                            Store (DerefOf (Index (Arg3, Zero)), PPRQ) /* \_SB_.PPRQ */
-                            Store (PPRQ, SMID) /* \_SB_.SMID */
-                            Store (0xC1, SMIT) /* \_SB_.SMIT */
+                            Store (DerefOf (Index (Arg3, Zero)), PPRQ)
+                            Store (PPRQ, SMID)
+                            Store (0xC1, SMIT)
                             Return (Zero)
                         }
 
@@ -249,9 +251,9 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                             Zero, 
                             Ones
                         })
-                        Store (PPRQ, TMPV) /* \_SB_.PCI0.LPC_.TPM_._DSM.TMPV */
-                        Store (And (TMPV, 0x1F, TMPV) /* \_SB_.PCI0.LPC_.TPM_._DSM.TMPV */, Index (TMP1, One))
-                        Return (TMP1) /* \_SB_.PCI0.LPC_.TPM_._DSM.TMP1 */
+                        Store (PPRQ, TMPV)
+                        Store (And (TMPV, 0x1F, TMPV), Index (TMP1, One))
+                        Return (TMP1)
                     }
 
                     If (LEqual (Arg2, 0x04))
@@ -267,11 +269,11 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                             Ones, 
                             Ones
                         })
-                        Store (0xFF, SMID) /* \_SB_.SMID */
-                        Store (0xC1, SMIT) /* \_SB_.SMIT */
+                        Store (0xFF, SMID)
+                        Store (0xC1, SMIT)
                         Store (SMID, Index (TMP2, One))
                         Store (Zero, Index (TMP2, 0x02))
-                        Return (TMP2) /* \_SB_.PCI0.LPC_.TPM_._DSM.TMP2 */
+                        Return (TMP2)
                     }
 
                     If (LEqual (Arg2, 0x06))
@@ -283,27 +285,27 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                     {
                         If (LLessEqual (DerefOf (Index (Arg3, Zero)), 0x0B))
                         {
-                            Store (DerefOf (Index (Arg3, Zero)), PPRQ) /* \_SB_.PPRQ */
-                            Store (PPRQ, SMID) /* \_SB_.SMID */
-                            Store (0xC1, SMIT) /* \_SB_.SMIT */
+                            Store (DerefOf (Index (Arg3, Zero)), PPRQ)
+                            Store (PPRQ, SMID)
+                            Store (0xC1, SMIT)
                             Return (Zero)
                         }
 
-                        If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x0E), 
-                            LLessEqual (DerefOf (Index (Arg3, Zero)), 0x12)))
+                        If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x0E), LLessEqual (
+                            DerefOf (Index (Arg3, Zero)), 0x12)))
                         {
-                            Store (DerefOf (Index (Arg3, Zero)), PPRQ) /* \_SB_.PPRQ */
-                            Store (PPRQ, SMID) /* \_SB_.SMID */
-                            Store (0xC1, SMIT) /* \_SB_.SMIT */
+                            Store (DerefOf (Index (Arg3, Zero)), PPRQ)
+                            Store (PPRQ, SMID)
+                            Store (0xC1, SMIT)
                             Return (Zero)
                         }
 
-                        If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (
-                            DerefOf (Index (Arg3, Zero)), 0x16)))
+                        If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (DerefOf (Index (
+                            Arg3, Zero)), 0x16)))
                         {
-                            Store (DerefOf (Index (Arg3, Zero)), PPRQ) /* \_SB_.PPRQ */
-                            Store (PPRQ, SMID) /* \_SB_.SMID */
-                            Store (0xC1, SMIT) /* \_SB_.SMIT */
+                            Store (DerefOf (Index (Arg3, Zero)), PPRQ)
+                            Store (PPRQ, SMID)
+                            Store (0xC1, SMIT)
                             Return (Zero)
                         }
 
@@ -319,32 +321,32 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                                 Return (0x04)
                             }
 
-                            If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), One), 
-                                LLessEqual (DerefOf (Index (Arg3, Zero)), 0x04)))
+                            If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), One), LLessEqual (
+                                DerefOf (Index (Arg3, Zero)), 0x04)))
                             {
                                 Return (0x04)
                             }
 
-                            If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x06), 
-                                LLessEqual (DerefOf (Index (Arg3, Zero)), 0x0D)))
+                            If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x06), LLessEqual (
+                                DerefOf (Index (Arg3, Zero)), 0x0D)))
                             {
                                 Return (0x04)
                             }
 
-                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x0F), LEqual (
-                                DerefOf (Index (Arg3, Zero)), 0x10)))
+                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x0F), LEqual (DerefOf (Index (
+                                Arg3, Zero)), 0x10)))
                             {
                                 Return (0x04)
                             }
 
-                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x13), LEqual (
-                                DerefOf (Index (Arg3, Zero)), 0x14)))
+                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x13), LEqual (DerefOf (Index (
+                                Arg3, Zero)), 0x14)))
                             {
                                 Return (0x04)
                             }
 
-                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x05), LEqual (
-                                DerefOf (Index (Arg3, Zero)), 0x0E)))
+                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x05), LEqual (DerefOf (Index (
+                                Arg3, Zero)), 0x0E)))
                             {
                                 If (LGreater (PPIC, Zero))
                                 {
@@ -354,8 +356,8 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                                 Return (0x03)
                             }
 
-                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (
-                                DerefOf (Index (Arg3, Zero)), 0x16)))
+                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (DerefOf (Index (
+                                Arg3, Zero)), 0x16)))
                             {
                                 If (LGreater (PPIC, Zero))
                                 {
@@ -387,8 +389,8 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                                 Return (0x03)
                             }
 
-                            If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), One), 
-                                LLessEqual (DerefOf (Index (Arg3, Zero)), 0x04)))
+                            If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), One), LLessEqual (
+                                DerefOf (Index (Arg3, Zero)), 0x04)))
                             {
                                 If (LGreater (PPIP, Zero))
                                 {
@@ -398,8 +400,8 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                                 Return (0x03)
                             }
 
-                            If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x06), 
-                                LLessEqual (DerefOf (Index (Arg3, Zero)), 0x0B)))
+                            If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x06), LLessEqual (
+                                DerefOf (Index (Arg3, Zero)), 0x0B)))
                             {
                                 If (LGreater (PPIP, Zero))
                                 {
@@ -409,9 +411,9 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                                 Return (0x03)
                             }
 
-                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x0E), LAnd (
-                                LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x15), LLessEqual (DerefOf (
-                                Index (Arg3, Zero)), 0x16))))
+                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x0E), LAnd (LGreaterEqual (
+                                DerefOf (Index (Arg3, Zero)), 0x15), LLessEqual (DerefOf (Index (Arg3, Zero)), 
+                                0x16))))
                             {
                                 If (LAnd (LGreater (PPIP, Zero), LGreater (PPIC, Zero)))
                                 {
@@ -421,15 +423,14 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                                 Return (0x03)
                             }
 
-                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x10), LEqual (
-                                DerefOf (Index (Arg3, Zero)), 0x12)))
+                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x10), LEqual (DerefOf (Index (
+                                Arg3, Zero)), 0x12)))
                             {
                                 Return (0x03)
                             }
 
-                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), Zero), LOr (
-                                LEqual (DerefOf (Index (Arg3, Zero)), 0x0F), LEqual (DerefOf (Index (Arg3, 
-                                Zero)), 0x11))))
+                            If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), Zero), LOr (LEqual (DerefOf (
+                                Index (Arg3, Zero)), 0x0F), LEqual (DerefOf (Index (Arg3, Zero)), 0x11))))
                             {
                                 Return (0x04)
                             }
@@ -447,14 +448,14 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
                     {
                         Return (Buffer (One)
                         {
-                             0x03                                             /* . */
+                             0x03                                           
                         })
                     }
 
                     If (LEqual (Arg2, One))
                     {
-                        Store (DerefOf (Index (Arg3, Zero)), TMPV) /* \_SB_.PCI0.LPC_.TPM_._DSM.TMPV */
-                        And (TMPV, One, TMPV) /* \_SB_.PCI0.LPC_.TPM_._DSM.TMPV */
+                        Store (DerefOf (Index (Arg3, Zero)), TMPV)
+                        And (TMPV, One, TMPV)
                         If (LEqual (TMPV, Zero))
                         {
                             Store (Zero, \_SB.MOR)
@@ -473,15 +474,15 @@ DefinitionBlock ("SSDT11.aml", "SSDT", 1, "Intel_", "TpmTable", 0x00001000)
 
                 Return (Buffer (One)
                 {
-                     0x00                                             /* . */
+                     0x00                                           
                 })
             }
 
             Method (CMOR, 0, NotSerialized)
             {
                 Store (Zero, \_SB.MOR)
-                Store (0x80, SMID) /* \_SB_.SMID */
-                Store (0xC1, SMIT) /* \_SB_.SMIT */
+                Store (0x80, SMID)
+                Store (0xC1, SMIT)
             }
         }
     }

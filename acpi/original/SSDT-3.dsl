@@ -1,9 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20140926-64 [Oct 24 2014]
+ * AML/ASL+ Disassembler version 20141107-64 [Dec 17 2014]
  * Copyright (c) 2000 - 2014 Intel Corporation
  * 
- * Disassembly of SSDT4.aml, Mon Nov 16 13:45:48 2015
+ * Disassembling to non-symbolic legacy ASL operators
+ *
+ * Disassembly of SSDT3.aml, Thu Dec 10 22:15:50 2015
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -16,7 +18,7 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20120711 (538052369)
  */
-DefinitionBlock ("SSDT4.aml", "SSDT", 1, "LENOVO", "Rmv_Batt", 0x00001000)
+DefinitionBlock ("SSDT3.aml", "SSDT", 1, "LENOVO", "Rmv_Batt", 0x00001000)
 {
 
     External (_SB_.PCI0.LPC_.EC__.BAT1, DeviceObj)
@@ -41,7 +43,7 @@ DefinitionBlock ("SSDT4.aml", "SSDT", 1, "LENOVO", "Rmv_Batt", 0x00001000)
                 \_SB.PCI0.LPC.EC.HKEY.MHKQ (0x4011)
                 If (\_SB.PCI0.LPC.EC.BAT1.XB1S)
                 {
-                    Notify (\_SB.PCI0.LPC.EC.BAT1, 0x03) // Eject Request
+                    Notify (\_SB.PCI0.LPC.EC.BAT1, 0x03)
                 }
             }
         }
@@ -50,9 +52,9 @@ DefinitionBlock ("SSDT4.aml", "SSDT", 1, "LENOVO", "Rmv_Batt", 0x00001000)
         {
             If (Arg0)
             {
-                Store (0x00, \_SB.PCI0.LPC.EC.BAT1.B1ST) /* External reference */
-                Store (0x01, \_SB.PCI0.LPC.EC.BAT1.SBLI) /* External reference */
-                Store (0x00, \_SB.PCI0.LPC.EC.BAT1.XB1S) /* External reference */
+                Store (0x00, \_SB.PCI0.LPC.EC.BAT1.B1ST)
+                Store (0x01, \_SB.PCI0.LPC.EC.BAT1.SBLI)
+                Store (0x00, \_SB.PCI0.LPC.EC.BAT1.XB1S)
             }
         }
     }
